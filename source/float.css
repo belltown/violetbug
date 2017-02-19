@@ -1,0 +1,185 @@
+/* NOTE: THIS FILE WAS CREATED BY COPYING index.css
+   AND REMOVING PARTS THAT DON'T APPLY !!! */
+
+@import './fontList.css';
+
+html {
+  height: 100vh;               /* Document occupies full viewport height */
+}
+
+body {
+  /* The List page uses this font family and size */
+  /* The Connection pages' font families and sizes are configurable */
+  font-family: 'Roboto', sans-serif;
+  font-size: 1rem;
+
+  height: 100%;               /* Body occupies the entire document height */
+  margin: 0;                  /* Remove browser default margin from the body */
+  cursor: default;            /* Default to a pointer cursor */
+  -webkit-user-select: none;  /* Prevent unwanted selection highlighting */
+}
+
+select, button, input, option, pre {
+  font: inherit;              /* Inherit all font properties from root font */
+  color: currentColor;
+}
+
+/* table component resets */
+table, caption, tbody, tfoot, thead, th, tr, td {
+  table-layout: fixed;
+  font-size: 100%;
+  font: inherit;
+  margin: 0;
+  border: 0;
+  padding: 0;
+  vertical-align: middle;
+}
+
+/* table element reset */
+table {
+  border-collapse: collapse;
+}
+
+/* input reset */
+input {
+  font: inherit;  /* Inherits font-family AND font-size */
+  color: inherit;
+  outline: none;
+  border: none;
+  padding: 0;
+}
+
+.fullHeight {
+  height: 100%;
+}
+
+/*****************************************************************************/
+/* #mainContainer contains everything on the page: header + content          */
+/*****************************************************************************/
+
+#mainContainer {
+  background-color: #1e2026;  /* Same as BrowserWindow backgroundColor */
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+}
+
+/*****************************************************************************/
+/* Custom scrollbars                                                         */
+/*****************************************************************************/
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar:horizontal {
+  height: 10px;
+}
+
+::-webkit-scrollbar-corner {
+  visibility: hidden;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #666;
+    border-radius: 4px;
+}
+
+/********************************************************************/
+/* #tabContentContainer contains everything below the tab header,   */
+/* and includes the device list page and device connection pages.   */
+/********************************************************************/
+
+#tabContentContainer {
+  /* Initially, no space is allocated for this item (flex-basis: 0)
+     #tabHeaderContainer initially occupies its content size
+     (its flex-basis is set to auto)
+     Then all remaining space is allocated to this item (flex-grow: 1) */
+  flex: auto;
+  display: flex;
+  flex-direction: row;
+}
+
+/*******************************************************/
+/* START OF CODE TO REMOVE WHEN CREATING float.css vvv */
+/*******************************************************/
+
+/*******************************************************/
+/* ^^^ END OF CODE TO REMOVE WHEN CREATING float.css   */
+/*******************************************************/
+
+/*******************************************************************/
+/* The panel that encloses a device connection tab                 */
+/*******************************************************************/
+
+/*
+  NOTE: ANY CHANGES HERE NEED TO BE MADE IN float.css ALSO !!!!!
+*/
+
+#connContainer {
+  flex: 1 1 100%;              /* Expand to fill parent container */
+  display: none;               /* None or block */
+  font-family: monospace;      /* User-configurable */
+  font-size: 1rem;             /* User-configurable */
+  background-color: black;     /* User-configurable */
+  color: #00DD00;              /* User-configurable */
+  -webkit-user-select: text;   /* Override list page's 'none' setting */
+}
+
+#connContainer input {
+  background-color: inherit;
+}
+
+.connPage {
+  display: none;               /* none or table */
+  height: 100%;
+}
+
+.deviceOutputPanelScroll {
+  height: 100%;
+  padding: 0 3px;
+  overflow: auto;
+}
+
+.deviceOutputPanel {
+  width: 100%;
+  color: inherit;
+  background-color: inherit;
+  word-break: break-all;
+  white-space: pre-wrap;       /* pre-wrap => no horizontal scrollbars */
+                               /* pre => horizontal scrollbars */
+}
+
+.deviceInputPanel {
+  width: 100%;
+  color: inherit;
+  background-color: inherit;
+}
+
+.faintBorder {
+  height: 1px;
+  opacity: 0.8;
+  background-color: currentcolor;
+}
+
+.promptPanel {
+  width: 1.4ch;           /* ">" prompt + right padding */
+  -webkit-user-select: none;
+}
+
+.promptPanel input {
+  -webkit-user-select: none;
+}
+
+pre {
+  margin: 0;
+  display: inline;
+  white-space: inherit;   /* not inherited by default for <pre> elements */
+}
+
+.deviceInputText {
+  width: 100%;
+  cursor: text;
+  padding: 3px 0;
+}

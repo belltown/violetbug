@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="colors.css">
+    <script src="colors.js"></script>
+    <title>Colors</title>
+  </head>
+  <body>
+    <div id="contentPanel">
+      <div id="fgbgSelect">
+        <div>
+          <input id="fgSelect" type="radio" name="fgbgSelect" checked>
+          <label for="fgSelect">Foreground</label>
+        </div>
+        <div>
+          <input id="bgSelect" type="radio" name="fgbgSelect">
+          <label for="bgSelect">Background</label>
+        </div>
+      </div>
+      <fieldset id="colorSelectionGroup">
+        <legend>Color Selection</legend>
+        <div id="colorSelectionPanel">
+          <!-- Red, green and blue color sliders -->
+          <div id="sliders">
+            <!-- Red slider -->
+            <label id="r-label" for="r-slider">Red</label>
+            <input id="r-slider" type="range" value="0" max="255">
+            <input id="r-value" type="text" maxlength="3">
+            <!-- Green slider -->
+            <label id="g-label" for="g-slider">Green</label>
+            <input id="g-slider" type="range" value="0" max="255">
+            <input id="g-value" type="text" maxlength="3">
+            <!-- Blue slider -->
+            <label id="b-label" for="b-slider">Blue</label>
+            <input id="b-slider" type="range" value="0" max="255">
+            <input id="b-value" type="text" maxlength="3">
+          </div>
+          <!-- Preset colors list -->
+          <div id="presets">
+            <!-- Dropdown list header element - click to open list -->
+            <ul id="listHead" tabindex="0">
+              <!-- Visible list item if nothing chosen yet -->
+              <li id="listHeadPredefined">
+                <div id="listHeadText">
+                  <div id="predefinedText">Predefined Colors ...</div>
+                  <div id="listHeadColor">
+                    <div style="background-color:#000000"></div>dummy
+                  </div>
+                  <span id="dropdownCaret"></span>
+                </div>
+              </li>
+            </ul>
+            <!-- Selectable list items (dropdown list) -->
+            <div id="listBodyPanel">  <!-- relative position container -->
+              <ul id="listBody">      <!-- absolute position -->
+                <li><span>Predefined Colors ...</span></li>
+                <!-- Colors corresponding to CSS basic color keywords -->
+                <li><div style="background-color:#000000"></div>black</li>
+                <li><div style="background-color:#C0C0C0"></div>silver</li>
+                <li><div style="background-color:#808080"></div>gray</li>
+                <li><div style="background-color:#FFFFFF"></div>white</li>
+                <li><div style="background-color:#800000"></div>maroon</li>
+                <li><div style="background-color:#FF0000"></div>red</li>
+                <li><div style="background-color:#800080"></div>purple</li>
+                <li><div style="background-color:#FF00FF"></div>fuchsia</li>
+                <li><div style="background-color:#008000"></div>green</li>
+                <li><div style="background-color:#00FF00"></div>lime</li>
+                <li><div style="background-color:#808000"></div>olive</li>
+                <li><div style="background-color:#FFFF00"></div>yellow</li>
+                <li><div style="background-color:#000080"></div>navy</li>
+                <li><div style="background-color:#0000FF"></div>blue</li>
+                <li><div style="background-color:#008080"></div>teal</li>
+                <li><div style="background-color:#00FFFF"></div>aqua</li>
+              </ul>
+            </div>
+          </div>
+          <!-- Preview the selected foreground and background colors -->
+          <div id="preview">
+            <p id="previewText">Foreground Text</p>
+          </div>
+        </div>
+      </fieldset>
+      <div id="buttonPanel">
+        <button id="okButton">OK</button>
+        <button id="cancelButton">Cancel</button>
+      </div>
+    </div>
+  </body>
+</html>

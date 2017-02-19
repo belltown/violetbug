@@ -1,0 +1,227 @@
+@import './fontList.css';
+
+body, input, select, option, button {
+  font-family: 'Roboto', sans-serif;
+}
+
+select, button, input {
+  font-size: 1rem;          /* Make same size as root font */
+}
+
+html {
+  height: 100vh;            /* Document occupies full viewport height */
+}
+
+body {
+  margin: 0;                /* No space around the edge of the body canvas */
+  height: 100%;             /* So we can vertically center content in body */
+  display: flex;            /* To make it easy to center content in page */
+  flex-direction: column;   /* To put buttons below color selection */
+  align-items: center;      /* Center content along cross axis (column) */
+  justify-content: center;  /* Center content along main axis (row) */
+  min-width: max-content;   /* Allow resized window to contain all content */
+}
+
+/* Everything is contained within the content panel */
+#contentPanel {
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-template-rows: auto auto;
+}
+
+/* Foreground and background radio buttons */
+#fgbgSelect {
+  grid-row: 1;
+  grid-column: 1;
+  align-self: center;
+  padding: 0 2rem 0 0;
+}
+
+#fgbgSelect input {
+  margin: 0;
+}
+
+/* Vertical space between fg and bg buttons */
+#fgbgSelect > div {
+  padding: 0.5rem 0;
+}
+
+fieldset {
+  border: 1px solid #777;
+  border-radius: 0.5rem;
+  padding: 0 1rem;
+  margin: 0;
+}
+
+legend {
+  color: #777;
+  background-color: white;
+  cursor: default;
+}
+
+#colorSelectionGroup {
+  grid-row: 1;
+  grid-column: 2;
+}
+
+#colorSelectionPanel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+#sliders {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  grid-row-gap: 0.5rem;
+  grid-column-gap: 1rem;
+}
+
+#sliders input[type=text] {
+  width: 3ch;
+  height: 1em;
+  padding: 0.2em;
+  border: 1px solid #777;
+}
+
+#sliders input[type=range] {
+  width: 10rem;
+}
+
+/* Dropdown list of preset color values */
+#presets {
+  width: 80%;
+  margin-top: 1.5rem;
+  cursor: default;
+}
+
+#presets ul {
+  list-style-type: none;    /* Get rid of default list bullets */
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+#presets li {
+  display: flex;
+  align-items: center;
+  line-height: 1.5em;
+  padding-left: 5px;
+}
+
+#presets li:hover {
+  background-color: #DDECF4;
+}
+
+/* List header simulates a dropdown box */
+#listHead {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border: 1px solid black;
+  height: 1.5em;
+}
+
+#listHeadPredefined {
+  display: list-item;
+}
+
+/* "Predefined Colors ..." text */
+#listHeadText {
+  display: flex;
+  width: 100%;
+}
+
+#listHeadColor {
+  display: none;
+  align-items: center;
+  width: 100%;
+}
+
+#listHeadColor > div {
+  margin-left: 0;
+}
+
+/* Dropdown caret */
+/* U+25BC : Black Down-Pointing Triangle, or */
+/* U+2228 : Logical OR */
+#dropdownCaret::before {
+  content: '\2228';
+}
+
+/* Right-align the dropdown caret */
+#dropdownCaret {
+  margin-left: auto;
+  font-weight: bold;
+  font-size: 0.64em;
+  padding-right: 0.64em;
+  color: #777;
+}
+
+/* Dropdown positioning is relative to the bottom of the listHead */
+#listBodyPanel {
+  position: relative;
+}
+
+/* Dropdown list displayed by JavaScript when listHead is clicked */
+#listBody {
+  display: none;        /* JavaScript will set display: block */
+  position: absolute;
+  width: 100%;
+  background-color: white;
+  height: 12.0em;
+  overflow-x: hidden;   /* Truncate horizontally */
+  overflow-y: auto;     /* Vertical scroll bar if necessary */
+  border: solid black 1px;
+  border-top: none;
+}
+
+/* Display a color box before the start of the list item text */
+#listBody li > div, #listHeadColor > div {
+  display: inline-block;      /* Color box appears on same line as text */
+  margin: 0 0.5ch 0 0.25ch;
+  height: 1.25em;
+  width: 25%;
+}
+
+/* Foreground/background color preview pane */
+#preview {
+  width: 80%;
+  margin: 0 auto;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* JavaScript sets 'color' to the foreground color */
+/* JavaScript sets 'background-color' and 'border' to the background color */
+#previewText {
+  width: 100%;
+  margin: 0;
+  font-size: 1.5rem;
+  text-align: center;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  color: #00FF00;
+  border: 1px solid #000000;
+  background-color: #000000;
+}
+
+/* Button panel contains OK and Cancel buttons */
+#buttonPanel {
+  grid-row: 2;
+  grid-column: 2;
+  margin-top: 1.5rem;
+  text-align: center;
+}
+
+/* Make each button the same size */
+#buttonPanel button {
+  width: 12ch;
+  line-height: 1.5rem;
+  margin: 0.5rem;
+}
+
+#buttonPanel button:hover {
+  background-color: #DDECF4;
+}

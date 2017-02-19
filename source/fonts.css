@@ -1,0 +1,120 @@
+@import './fontList.css';
+
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
+html {
+  height: 100vh;               /* Document occupies full viewport height */
+}
+
+select, button, input, option {
+  font: inherit;              /* Inherit all font properties from root font */
+}
+
+body {
+  margin: 0;                  /* No space around the edge of the body canvas */
+  height: 100%;               /* So we can vertically center content in body */
+  display: flex;              /* To make it easy to center content in page */
+  justify-content: center;    /* Center content horizontally within body */
+  align-items: center;        /* Center content vertically within body */
+  min-width: fit-content;     /* Avoid disappearing content on resize */
+  background-color: #F3F3F3;  /* Configure page color if needed */
+}
+
+#contentPanel {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto auto auto;
+  padding: 0 1rem;
+  border: 2px solid #009900;
+  border-radius: 0.5rem;
+  background-color: #F3F3F3;  /* Configure content panel color if needed */
+}
+
+#familyPanel {
+  grid-column: 1; grid-row: 1;
+}
+
+#sizePanel {
+  grid-column: 2; grid-row: 1;
+  justify-self: end;
+}
+
+#previewPanel {
+  grid-column: 1 / span 2; grid-row: 2;
+}
+
+#buttonPanel {
+  grid-column: 1 / span 2; grid-row: 3;
+  justify-self: center;
+}
+
+#familyPanel p, #sizePanel p {
+  color: #888;
+}
+
+ul {
+  background-color: #E8E8E8;
+  border: 1px solid #bbb;
+  border-radius: 0.2rem;
+  list-style-type: none;
+  overflow-x: hidden;
+  overflow-y: auto;
+  cursor: default;
+  padding: 0;
+  height: min-content;
+  max-height: calc(10 * 1.4rem);  /* 10 x li's line-height */
+  -webkit-user-select: none;      /* Disable user-selection of text in lists */
+}
+
+li {
+  display: flex;                  /* Center list item text vertically */
+  align-items: center;
+  border: 1px solid #E8E8E8;
+  padding: 0 0 0 0.5rem;
+  margin: 0;
+  box-sizing: border-box;
+  line-height: calc(1.4rem - 2px);
+  height: 1.4rem;
+  background-color: #E8E8E8;
+}
+
+:focus {
+  border: 1px dotted brown !important;
+}
+
+.selected {
+  background-color: #61c0ff !important;  /* Selected color trumps hover */
+  border: 1px solid #61c0ff !important;
+}
+
+li:hover, button:hover {
+  background-color: #d3efff;
+}
+
+#sizeList {
+  width: 17ch;
+}
+
+#familyList {
+  margin-right: 2.5rem;
+}
+
+#fontPreview {
+  text-align: center;
+  margin: 0;
+  height: 6rem;       /* Must use rem, not em, values to keep box same size */
+                      /* when the font size is changed */
+  line-height: 6rem;  /* Needed in order to vertically center the text */
+  background-color: black;
+  color: lime;
+  border: 2px solid lime;
+  border-radius: 0.5rem;
+  margin: 1rem 0;
+}
+
+button {
+  width: 13ch;
+  margin: 1rem 0.4rem 2rem;
+}

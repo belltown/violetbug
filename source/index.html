@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="index.css">
+    <script src="index.js"></script>
+    <title></title>
+  </head>
+  <body>
+
+    <!-- Contains everything -->
+    <div id="mainContainer">
+
+      <!-- Contains the top panel with list page/connection tab headers -->
+      <div id="tabHeader">
+        <div id="tabAdd" class="tab selected">
+          <span>Rokus</span>
+        </div>
+        <!-- Make a copy of tabStub for each new connection -->
+        <div id="tabStub" class="tab">
+          <span class="tabIp tabConnDown"></span><!-- IP address -->
+          <span class="tabClose">X</span><!-- Close button -->
+        </div>
+      </div><!-- tabHeader -->
+
+      <!-- Contains the bottom panel list/connection page content -->
+      <div id="tabContentContainer">
+
+        <!-- Contains the device list page, hidden if connection tab shown -->
+        <div id="deviceListPage" class="page">
+          <div id="deviceListPageContent">
+            <div id="connectButton" tabindex="0">
+              Connect
+            </div>
+            <fieldset id="connectToGroup">
+              <legend>Connect To</legend>
+              <table id="connectToTable">
+                <tr id="connectLabels">
+                  <td>IP Address</td>
+                  <td>Port</td>
+                </tr>
+                <tr id="connectValues">
+                  <td>
+                    <input id="connectToIp" type="text" tabindex="0">
+                  </td>
+                  <td>
+                  <select id="connectToPort" name="portComboBox"
+                          tabindex="0">
+                    <option value="8085">8085 (Main Debug)</option>
+                    <option value="8060">8060 (ECP)</option>
+                    <option value="8080">8080 (Genkey)</option>
+                    <option value="8087">8087 (Screensaver)</option>
+                    <option value="8089">8089 (Scene Graph) - not used</option>
+                    <option value="8090">8090 (Task 1) - not used</option>
+                    <option value="8091">8091 (Task 2) - not used</option>
+                    <option value="8092">8092 (Task 3) - not used</option>
+                    <option value="8093">8093 (Task 4+) - not used</option>
+                  </select>
+                  </td>
+                </tr>
+              </table>
+            </fieldset>
+            <fieldset id="discoveredDevicesGroup">
+              <legend>Discovered Devices</legend>
+              <table id="discoveredDevices">
+                <thead>
+                  <th class="ipAddr"></th>
+                  <th></th>
+                  <th class="del"></th>
+                </thead>
+                <tbody id="deviceTableBody">
+                <!-- A single row will be added for each device -->
+                <!--<tr>-->
+                  <!--<td class="ipAddr"></td>--><!-- IP Address -->
+                  <!--<td></td>--><!-- Friendly Name -->
+                  <!--<td class="del">&#x24e7;</td>--><!-- Delete button -->
+                <!--</tr>-->
+                </tbody>
+              </table>
+            </fieldset>
+            <fieldset id="selectedDeviceGroup">
+              <legend>Selected Device</legend>
+              <div id="selectedDeviceList">
+                <span>Friendly Name</span>
+                <input id="friendlyName" tabindex="0">
+                <span>Serial Number</span>
+                <input id="serialNumber" tabindex="-1" readonly>
+                <span>Model Number</span>
+                <input id="modelNumber" tabindex="-1" readonly>
+                <span>Model Name</span>
+                <input id="modelName" tabindex="-1" readonly>
+              </div>
+            </fieldset>
+          </div><!--deviceListPageContent-->
+        </div><!-- deviceListPage -->
+
+        <!-- Layout for the connection page is implemented using HTML tables
+             due to performance reasons
+             With large amounts of device output, the Chrome rendering times
+             become too slow to be of any practical use. Fixed layout tables
+             render incredibly faster than flexbox or grid layouts -->
+        <!-- Contains all connection tabs, hidden if list page shown -->
+        <div id="connContainer">
+          <!-- Make a copy of conn-stub for each connection tab -->
+          <table id="conn-stub" class="page connPage">
+            <tr class="fullHeight">
+              <td>
+                <!-- Device output area at the top of the viewport -->
+                <div class="deviceOutputPanelScroll">
+                  <table class="deviceOutputPanel">
+                    <!--<tr><td><pre class="temp">Line data</pre></td></tr>-->
+                  </table>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <!-- User input area at the bottom of the viewport -->
+                <table class="deviceInputPanel">
+                  <!-- Border row separates user input from device output -->
+                  <tr>
+                    <!-- Width set by user input prompt in the last row -->
+                    <td class="promptPanel">
+                      <!-- Use a full-width 1 pixel high semi-opaque <div> to
+                           give the appearance of a faint border above
+                           the input text panel -->
+                      <div class="faintBorder"></div>
+                    </td>
+                    <!-- Width set by user input text in the last row -->
+                    <td class="inputTextPanel">
+                      <div class="faintBorder"></div>
+                    </td>
+                  </tr>
+                  <!-- User input row -->
+                  <tr>
+                    <!-- User input prompt -->
+                    <td class="promptPanel">
+                      <input value="&gt;" spellcheck="false" readonly>
+                    </td>
+                    <!-- User input text -->
+                    <td class="inputTextPanel">
+                      <input class="deviceInputText" value=""
+                                                     spellcheck="false">
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table><!-- conn-stub -->
+        </div><!-- connContainer -->
+
+      </div><!-- tabContentContainer -->
+    </div><!-- mainContainer -->
+  </body>
+</html>

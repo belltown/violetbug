@@ -1,0 +1,62 @@
+/****************************************************************************/
+/*      Sans Serif Fonts (non-configurable)                                 */
+/****************************************************************************/
+
+@font-face {
+  font-family: 'Segoe UI';
+  src: local('Segoe UI'), url('./fonts/sans/Segoe UI/segoeui.ttf');
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src: local('Roboto'), url('./fonts/sans/Roboto/Roboto-Regular.ttf');
+}
+
+/****************************************************************************/
+/*      Monospace Fonts (user-configurable)                                 */
+/****************************************************************************/
+
+@font-face {
+  font-family: 'Consolas';
+  src: local('Consolas'), url('./fonts/mono/Consolas/consola.ttf');
+}
+
+@font-face {
+  font-family: 'Courier New';
+  src: local('Courier New'), url('./fonts/mono/Courier New/cour.ttf');
+}
+
+@font-face {
+  font-family: 'Fira Mono';
+  src: local('Fira Mono'), url('./fonts/mono/Fira Mono/FiraMono-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'Inconsolata';
+  src: url('./fonts/mono/Inconsolata/Inconsolata-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'InputMono';
+  src: url('./fonts/mono/InputMono/InputMono-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'Liberation Mono';
+  src: url('./fonts/mono/Liberation Mono/LiberationMono-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'Lucida Console';
+  src: url('./fonts/mono/Lucida Console/lucon.ttf');
+}
+
+@font-face {
+  font-family: 'Meslo LG M';
+  src: url('./fonts/mono/Meslo LG M/MesloLGM-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'Source Code Pro';
+  src: url('./fonts/mono/Source Code Pro/SourceCodePro-Regular.ttf');
+}

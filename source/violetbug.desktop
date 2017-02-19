@@ -1,0 +1,14 @@
+# This file assumes that VioletBug is installed in /opt/violetbug-linux-x64/
+# This file should be placed in ~/.local/share/applications/violetbug.desktop
+[Desktop Entry]
+Version=1.0
+Name=VioletBug
+GenericName=Roku Debugger
+Terminal=false
+Type=Application
+Categories=Utility;Debugger;Development;
+Comment=A Roku Debugger Graphical Interface
+Exec=/opt/violetbug-linux-x64/violetbug
+Icon=/opt/violetbug-linux-x64/resources/app/images/icon.png
+StartupNotify=false
+StartupWMClass=VioletBug

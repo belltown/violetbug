@@ -1,0 +1,503 @@
+/* NOTE: WHEN CHANGING THIS FILE, CHANGE float.css TOO!!! */
+
+@import './fontList.css';
+
+html {
+  height: 100vh;               /* Document occupies full viewport height */
+}
+
+body {
+  /* The List page uses this font family and size */
+  /* The Connection pages' font families and sizes are configurable */
+  font-family: 'Roboto', sans-serif;
+  font-size: 1rem;
+
+  height: 100%;               /* Body occupies the entire document height */
+  margin: 0;                  /* Remove browser default margin from the body */
+  cursor: default;            /* Default to a pointer cursor */
+  -webkit-user-select: none;  /* Prevent unwanted selection highlighting */
+}
+
+select, button, input, option, pre {
+  font: inherit;              /* Inherit all font properties from root font */
+  color: currentColor;
+}
+
+/* table component resets */
+table, caption, tbody, tfoot, thead, th, tr, td {
+  table-layout: fixed;
+  font-size: 100%;
+  font: inherit;
+  margin: 0;
+  border: 0;
+  padding: 0;
+  vertical-align: middle;
+}
+
+/* table element reset */
+table {
+  border-collapse: collapse;
+}
+
+/* input reset */
+input {
+  font: inherit;  /* Inherits font-family AND font-size */
+  color: inherit;
+  outline: none;
+  border: none;
+  padding: 0;
+}
+
+.fullHeight {
+  height: 100%;
+}
+
+/*****************************************************************************/
+/* #mainContainer contains everything on the page: header + content          */
+/*****************************************************************************/
+
+#mainContainer {
+  background-color: #1e2026;  /* Same as BrowserWindow backgroundColor */
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+}
+
+/*****************************************************************************/
+/* Custom scrollbars                                                         */
+/*****************************************************************************/
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar:horizontal {
+  height: 10px;
+}
+
+::-webkit-scrollbar-corner {
+  visibility: hidden;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #666;
+    border-radius: 4px;
+}
+
+/********************************************************************/
+/* #tabContentContainer contains everything below the tab header,   */
+/* and includes the device list page and device connection pages.   */
+/********************************************************************/
+
+#tabContentContainer {
+  /* Initially, no space is allocated for this item (flex-basis: 0)
+     #tabHeaderContainer initially occupies its content size
+     (its flex-basis is set to auto)
+     Then all remaining space is allocated to this item (flex-grow: 1) */
+  flex: auto;
+  display: flex;
+  flex-direction: row;
+}
+
+/*******************************************************/
+/* START OF CODE TO REMOVE WHEN CREATING float.css vvv */
+/*******************************************************/
+
+/********************************************************************/
+/* #tabHeaderContainer contains the list of all tab links           */
+/********************************************************************/
+
+#tabHeader {
+  /* Intially space is allocated for item's content size (flex-basis: auto)
+     The item remains at this size (flex-grow and flex-shrink set to zero)
+     All remaining space in #mainContainer will be allocated to
+     #tabContentContainer with initial flex-basis: 0 (no space allocated)
+     and flex-grow: 1 (take up all remaining space) */
+  flex: 0 0 auto;
+  display: flex;
+  /* The individual tab headers are laid out horizontally in a single row
+     at the top of #mainContainer
+     A horizontal scroll bar beneath the tab headers allows tab headers
+     that overflow the content area
+     The background is set to the same color as an empty scrollbar track,
+     removing all signs of the scroll bar when it is not required,
+     yet preserving its space to avoid the rest of page jumping down when
+     the scroll bar is needed */
+  flex-direction: row;
+  overflow-x: scroll;
+  padding-top: 5px;
+  padding-bottom: 0px;
+  background-color: #464D72;
+}
+
+.tab {
+  flex: 0 0 auto;
+  display: flex;       /* Set in VBDockPanel.js/createConnHeader */
+  flex-direction: row;
+  align-items: center;
+  padding: 0px 2px 1px 1px;
+  cursor: pointer;
+  font-size: 0.9em;
+  background-color: #AAA;
+  border: 4px solid #464D72;
+  border-radius: 8px;
+}
+
+.tab.selected {
+  background-color: #EEE;
+}
+
+.tab:hover {
+  border: 4px solid #158615;
+  border-radius: 8px;
+}
+
+.tabIp {
+  padding: 0 0.1em;
+}
+
+.tabClose {
+  height: 1em;
+  width: 1em;
+  line-height: 1em;
+  font-size: 0.9em;
+  padding: 0.3em;
+  margin-left: 0.1em;
+  text-align: center;
+  background-color: #AAA;
+  color: #DDD;
+  border: 2px solid #888;
+  border-radius: 50%;
+}
+
+.tabClose:hover {
+  background-color: #FFBCBC;
+  color: red;
+}
+
+#tabStub {
+  display: none;
+}
+
+#tabAdd {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  height: 1.5em;
+  padding: 4px;
+}
+
+.tabConnDown {
+  color: red;
+}
+
+/********************************************************************/
+/* The panel that encloses the device list                          */
+/********************************************************************/
+
+/* Center the deviceListPageContent in this container */
+#deviceListPage {
+  width: 100%;
+  display: block;  /* none or block */
+}
+
+#deviceListPageContent {
+  height: 32rem;
+  width: 34rem;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  padding: 5px;
+  border: 3px solid  #464d72;
+  border: none;
+  border-radius: 10px;
+}
+
+#deviceListPage *:focus {
+  /*outline: -webkit-focus-ring-color auto;*/
+  outline: #009900 auto;
+  outline-width: thin;
+}
+
+#deviceListPage input {
+  padding: 4px 2px 4px 2px;
+}
+
+#deviceListPage select {
+  padding: 4px 2px 4px 0px;
+  box-sizing: border-box;
+}
+
+#deviceListPage option {
+  padding: 0;
+}
+
+#deviceListPage input[readonly],
+#connectLabels,
+#discoveredDevices td.del {
+  color: #6798a2;
+}
+
+#deviceListPage input,
+#deviceListPage select {
+  border: 1px solid #777;
+}
+
+#deviceListPage input[readonly] {
+  background-color: #323645;
+}
+
+#connectButton,
+#deviceListPage input,
+#deviceListPage select,
+#deviceListPage option {
+  background-color: #2B2E3B;
+  color: #9feaf9;
+}
+
+#connectButton:hover,
+#connectToPort:hover,
+#connectToIp:hover,
+#discoveredDevices tr:hover,
+#deviceListPage input:read-write:hover {
+  background-color: #3a486f;
+}
+
+#connectToTable tr:last-child td {
+  border: 1px solid #777;
+}
+
+#selectedDeviceList span {
+  color: #4d6975;
+}
+
+/********************************************************************/
+
+#connectButton {
+  flex: 0 0 auto;
+  display: block;
+  width: 10ch;
+  text-align: center;
+  margin: 0 auto;
+  margin-top: 19px;
+  margin-bottom: 10px;
+  padding: 5px 12px;
+  cursor: pointer;
+  border: 2px solid #707070;
+  border-radius: 4px;
+}
+
+/*****************************************************************/
+
+fieldset {
+  margin: 5px 5px 5px 5px;
+  color: #6798a2;
+  /*border: 1px solid #6798a266;*/
+  border: 1px solid #98a20066;
+  border-radius: 3px;
+}
+
+legend {
+  text-align: left;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #4d6975;
+}
+
+/*****************************************************************/
+
+fieldset#connectToGroup {
+  flex: 0 0 auto;
+}
+
+#connectToTable {
+  width: 100%;
+  table-layout: fixed;
+  border-spacing: 0.25em 0.2em;
+  border-collapse: separate;
+}
+
+#connectToTable select {
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+#connectToTable input, select {
+  box-sizing: border-box;
+  border: none;
+  width: 100%;
+}
+
+#connectToTable td {
+  padding: 0;
+  margin: 0;
+  height: 2rem;
+}
+
+#connectToPanel {
+  width: 100%;
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+  grid-gap: 10px;
+  box-sizing: border-box;
+}
+
+/********************************************************************/
+
+fieldset#discoveredDevicesGroup {
+  flex: 1 1 100%;
+}
+
+#discoveredDevices {
+  table-layout: fixed;
+  width: 100%;
+  border-spacing: 0;
+  border-collapse: collapse;
+  overflow: hidden;
+  cursor: pointer;
+  overflow-y: scroll;
+  color: #6798a2;
+}
+
+#discoveredDevices tr:hover td.del {
+  color: maroon;
+}
+
+#discoveredDevices td.del:hover {
+  color: red !important;
+}
+
+#discoveredDevices tr.selectedDevice {
+  color: #9feaf9;
+}
+
+#discoveredDevices th.ipAddr {
+  width: 15ch;
+}
+
+#discoveredDevices th.del {
+  width: 3ch;
+}
+
+#discoveredDevices td {
+  vertical-align: middle;
+  overflow: hidden;
+}
+
+#discoveredDevices td.ipAddr {
+  padding-right: 5px;
+}
+
+#discoveredDevices td.del {
+  padding: 0px 5px 3px 5px;
+  text-align: center;
+}
+
+/********************************************************************/
+
+fieldset#selectedDeviceGroup {
+  flex: 0 0 auto;
+}
+
+#selectedDeviceList {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-column-gap: 20px;
+  grid-row-gap: 3px;
+}
+
+#selectedDeviceList span {
+  align-self: center;
+  color: #4d6975;
+}
+
+#selectedDeviceList input {
+  border: none;
+}
+
+#serialNumber:focus, #modelNumber:focus, #modelName:focus {
+  outline: none;
+}
+
+/*******************************************************/
+/* ^^^ END OF CODE TO REMOVE WHEN CREATING float.css   */
+/*******************************************************/
+
+/*******************************************************************/
+/* The panel that encloses a device connection tab                 */
+/*******************************************************************/
+
+/*
+  NOTE: ANY CHANGES HERE NEED TO BE MADE IN float.css ALSO !!!!!
+*/
+
+#connContainer {
+  flex: 1 1 100%;              /* Expand to fill parent container */
+  display: none;               /* None or block */
+  font-family: monospace;      /* User-configurable */
+  font-size: 1rem;             /* User-configurable */
+  background-color: black;     /* User-configurable */
+  color: #00DD00;              /* User-configurable */
+  -webkit-user-select: text;   /* Override list page's 'none' setting */
+}
+
+#connContainer input {
+  background-color: inherit;
+}
+
+.connPage {
+  display: none;               /* none or table */
+  height: 100%;
+}
+
+.deviceOutputPanelScroll {
+  height: 100%;
+  padding: 0 3px;
+  overflow: auto;
+}
+
+.deviceOutputPanel {
+  width: 100%;
+  color: inherit;
+  background-color: inherit;
+  word-break: break-all;
+  white-space: pre-wrap;       /* pre-wrap => no horizontal scrollbars */
+                               /* pre => horizontal scrollbars */
+}
+
+.deviceInputPanel {
+  width: 100%;
+  color: inherit;
+  background-color: inherit;
+}
+
+.faintBorder {
+  height: 1px;
+  opacity: 0.8;
+  background-color: currentcolor;
+}
+
+.promptPanel {
+  width: 1.4ch;           /* ">" prompt + right padding */
+  -webkit-user-select: none;
+}
+
+.promptPanel input {
+  -webkit-user-select: none;
+}
+
+pre {
+  margin: 0;
+  display: inline;
+  white-space: inherit;   /* not inherited by default for <pre> elements */
+}
+
+.deviceInputText {
+  width: 100%;
+  cursor: text;
+  padding: 3px 0;
+}

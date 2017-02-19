@@ -1,0 +1,82 @@
+@import './fontList.css';
+
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
+html {
+  height: 100vh;               /* Document occupies full viewport height */
+}
+
+select, button, input, option {
+  font: inherit;              /* Inherit all font properties from root font */
+}
+
+body {
+  margin: 0;                  /* No space around the edge of the body canvas */
+  height: 100%;               /* So we can vertically center content in body */
+  min-width: fit-content;     /* Avoid disappearing content on resize */
+  background-color: #F3F3F3;  /* Configure page color if needed */
+}
+
+/* Used to center #contentPanel horizontally and vertically */
+#contentContainer {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#contentPanel {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2em;
+}
+
+#helpPanel {
+  border: 1px solid black;
+  border-radius: 5px;
+  background-color: #CCC;
+  padding: 1.5em 2em;
+  text-align: center;
+  line-height: 2em;
+}
+
+#shortcutList {
+  list-style: none;
+  margin: 2em 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 0 1rem;
+  background-color: #F3F3F3;  /* Configure content panel color if needed */
+}
+
+#shortcutList li {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  line-height: 1.5rem;
+  margin: 1px 0;
+}
+
+#shortcutList span {
+  flex: 0 0 auto;
+  width: 7ch;
+}
+
+#shortcutList input {
+  flex: 1 1 auto;
+  border: 1px solid #CCECFF;
+}
+
+#buttonPanel {
+  margin: 0 auto;
+}
+
+button {
+  width: 13ch;
+  margin: 0 1.5rem;
+}

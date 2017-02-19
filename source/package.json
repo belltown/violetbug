@@ -1,0 +1,76 @@
+{
+  "name":             "violetbug",
+  "productName":      "VioletBug",
+  "version":          "0.0.1",
+  "private":          true,
+  "description":      "VioletBug -- A Roku Debugger Graphical Interface",
+  "main":             "main.js",
+  "scripts": {
+    "start":          "electron .",
+    "test":           "echo If it works, it works",
+
+    "build-win":      "electron-packager . violetbug --platform=win32 --arch=x64 --out ../builds/win --overwrite --icon=images/icon.ico --win32metadata.CompanyName=Belltown --win32metadata.ProductName=VioletBug --win32metadata.FileDescription='VioletBug Roku Debugger' --app-copyright='Copyright © 2017 Belltown'",
+    "build-linux":    "electron-packager . violetbug --platform=linux --arch=x64 --out ../builds/linux --overwrite --icon=images/icon.png --app-copyright='Copyright © 2017 Belltown'",
+    "build-mac":      "electron-packager . violetbug --platform=darwin --arch=x64 --out ../builds/mac --overwrite --icon=images/icon.icns --app-bundle-id=tk.belltown-roku.violetbug --app-category-type=public.app-category.developer-tools --app-copyright='Copyright © 2017 Belltown'",
+
+    "zip-win":        "mkdir -p ../dist && cd ../builds/win && zip -r -q ../../dist/violetbug-win * && cd ../../source",
+    "zip-linux":      "mkdir -p ../dist && cd ../builds/linux && zip -r -q --symlinks ../../dist/violetbug-linux * && cd ../../source",
+    "zip-mac":        "mkdir -p ../dist && cd ../builds/mac/violetbug-darwin-x64 && zip -r -q --symlinks ../../../dist/violetbug-mac violetbug.app && cd ../../../source",
+    "zip-on-linux":   "npm run zip-win && npm run zip-linux && npm run zip-mac",
+
+    "dist-appimage":  "build --linux AppImage",
+    "dist-deb":       "build --linux deb",
+    "dist-rpm":       "build --linux rpm",
+    "dist-freebsd":   "build --linux freebsd",
+    "dist-tarxz":     "build --linux tar.xz",
+    "dist-win":       "build --win"
+  },
+  "build": {
+    "appId":          "tk.belltown-roku.violetbug",
+    "directories": {
+      "buildResources": "images",
+      "output":         "../dist/"
+    },
+    "nsis": {
+      "oneClick":     true
+    },
+    "win": {},
+    "linux": {
+      "target":       ["AppImage", "deb", "rpm", "freebsd", "tar.xz"],
+      "category":     "Development",
+      "vendor":       "Belltown",
+      "synopsis":     "Roku Debugger Graphical Interface",
+      "description":  "A cross-platform Roku Debugger graphical interface",
+      "icon":         "."
+    }
+  },
+  "keywords": [
+    "PurpleBug",
+    "VioletBug",
+    "Roku",
+    "debugger",
+    "debug",
+    "debugger",
+    "Telnet"
+  ],
+  "copyright":        "Copyright © 2017 Belltown",
+  "license":          "MIT",
+  "author": {
+    "name":           "Belltown",
+    "email":          "nospam@gmail.com",
+    "url":            "http://belltown-roku.tk/VioletBug"
+  },
+  "homepage":         "http://belltown-roku.tk/VioletBug",
+  "repository": {
+    "type":           "git",
+    "url":            "https://github.com/belltown/VioletBug"
+  },
+  "bugs": {
+    "url":            "https://github.com/belltown/VioletBug/issues"
+  },
+  "devDependencies": {
+    "electron": "1.4.15",
+    "electron-builder": "13.9.0",
+    "electron-packager": "8.5.1"
+  }
+}

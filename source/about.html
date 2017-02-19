@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>About VioletBug</title>
+    <style>
+      @import './fontList.css';
+      body {
+        font-family: 'Roboto', sans-serif;
+        letter-spacing: 0.075em;
+        margin: 25px;
+        padding: 0;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <p>VioletBug</p>
+    <p>Version <span id="version">1.0.0</span></p>
+    <p>Copyright &copy; <span id="year">2017</span> Belltown</p>
+    <script>
+      try {
+        const {version} = require('./package.json');
+        if (version) {
+          document.getElementById('version').innerHTML = version;
+        }
+        document.getElementById('year').innerHTML = new Date().getFullYear();
+      }
+      catch (e) {}
+    </script>
+  </body>
+</html>

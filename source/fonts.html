@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="fonts.css">
+    <script src="fonts.js"></script>
+    <title>Fonts</title>
+  </head>
+  <body>
+    <div id="contentPanel">
+      <div id="familyPanel">
+        <p>Family</p>
+        <ul id="familyList" tabindex="0">
+          <!-- List items are not focusable by default and therefore will
+               not trigger keydown events
+               Setting a tabindex of -1 makes them focusable and
+               consequently allows them to generate keydown events -->
+          <li tabindex="-1">monospace</li>
+          <li tabindex="-1">Consolas</li>
+          <li tabindex="-1">Courier New</li>
+          <li tabindex="-1">Fira Mono</li>
+          <li tabindex="-1">Inconsolata</li>
+          <li tabindex="-1">InputMono</li>
+          <li tabindex="-1">Liberation Mono</li>
+          <li tabindex="-1">Lucida Console</li>
+          <li tabindex="-1">Meslo LG M</li>
+          <li tabindex="-1">Source Code Pro</li>
+        </ul>
+      </div>
+      <div id="sizePanel">
+        <p>Size</p>
+        <ul id="sizeList" tabindex="0">
+          <li tabindex="-1">8 pt</li>
+          <li tabindex="-1">9 pt</li>
+          <li tabindex="-1">10 pt</li>
+          <li tabindex="-1">11 pt</li>
+          <li tabindex="-1">12 pt</li>
+          <li tabindex="-1">13 pt</li>
+          <li tabindex="-1">14 pt</li>
+          <li tabindex="-1">15 pt</li>
+          <li tabindex="-1">16 pt</li>
+          <li tabindex="-1">17 pt</li>
+          <li tabindex="-1">18 pt</li>
+          <li tabindex="-1">19 pt</li>
+          <li tabindex="-1">20 pt</li>
+          <li tabindex="-1">21 pt</li>
+          <li tabindex="-1">22 pt</li>
+          <li tabindex="-1">23 pt</li>
+          <li tabindex="-1">24 pt</li>
+        </ul>
+      </div>
+      <div id="previewPanel">
+        <p id="fontPreview">Courier New</p>
+      </div>
+      <div id="buttonPanel">
+        <button id="okButton" autofocus>OK</button>
+        <button id="defaultsButton">Defaults</button>
+        <button id="cancelButton">Cancel</button>
+      </div>
+    </div>
+  </body>
+</html>
