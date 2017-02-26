@@ -46,6 +46,4 @@ The following commands are available to generate installers in `/dist`:
 | `npm run dist-appimage`
 | `npm run dist-deb`
 | `npm run dist-rpm`
-| `npm run dist-freebsd`
-| `npm run dist-tarxz`
 | `npm run dist-win`

@@ -47,6 +47,7 @@ class VBFloatPanel {
     ipcRenderer.on('unFloatTab',   (e, connId) => this.doConn('unFloatTab'))
     ipcRenderer.on('clearScreen',  (e, connId) => this.doConn('clearScreen'))
     ipcRenderer.on('clearLine',    (e, connId) => this.doConn('clearLine'))
+    ipcRenderer.on('focusInput',   (e, connId) => this.doConn('focusInput'))
 
   }
 
@@ -68,6 +69,7 @@ class VBFloatPanel {
           case 'reConnect':   return this.conn.onReConnect()
           case 'clearScreen': return this.conn.onClearScreen()
           case 'clearLine':   return this.conn.onClearLine()
+          case 'focusInput':  return this.conn.onFocusInput()
         }
       }
       catch(e) {

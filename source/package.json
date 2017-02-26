@@ -1,7 +1,7 @@
 {
   "name":             "violetbug",
   "productName":      "VioletBug",
-  "version":          "0.0.1",
+  "version":          "0.0.2",
   "private":          true,
   "description":      "VioletBug -- A Roku Debugger Graphical Interface",
   "main":             "main.js",
@@ -21,8 +21,6 @@
     "dist-appimage":  "build --linux AppImage",
     "dist-deb":       "build --linux deb",
     "dist-rpm":       "build --linux rpm",
-    "dist-freebsd":   "build --linux freebsd",
-    "dist-tarxz":     "build --linux tar.xz",
     "dist-win":       "build --win"
   },
   "build": {
@@ -36,10 +34,9 @@
     },
     "win": {},
     "linux": {
-      "target":       ["AppImage", "deb", "rpm", "freebsd", "tar.xz"],
+      "target":       ["AppImage", "deb", "rpm"],
       "category":     "Development",
       "vendor":       "Belltown",
-      "synopsis":     "Roku Debugger Graphical Interface",
       "description":  "A cross-platform Roku Debugger graphical interface",
       "icon":         "."
     }
@@ -70,7 +67,7 @@
   },
   "devDependencies": {
     "electron": "1.4.15",
-    "electron-builder": "13.9.0",
-    "electron-packager": "8.5.1"
+    "electron-builder": "14.4.0",
+    "electron-packager": "8.5.2"
   }
 }

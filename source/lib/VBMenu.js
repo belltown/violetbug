@@ -55,6 +55,7 @@ class VBMenu {
         label: app.getName(),
         submenu: [
           fileMenu(),
+          editMenu(),
           settingsMenu(),
           windowMenu(),
           helpMenu()
@@ -112,6 +113,22 @@ class VBMenu {
               app.quit()
             }
           }
+        ]
+      }
+    }
+
+    function editMenu() {
+      return {
+        label: 'Edit',
+        submenu: [
+          { role: 'undo' },
+          { role: 'redo' },
+          { type: 'separator' },
+          { role: 'cut' },
+          { role: 'copy' },
+          { role: 'paste' },
+          { role: 'delete' },
+          { role: 'selectall' },
         ]
       }
     }
@@ -372,6 +389,9 @@ class VBMenu {
     template.push(fileMenu())
 
     // [2] ...
+    template.push(editMenu())
+
+    // [3] ...
     template.push(settingsMenu())
 
     // [3] ...
@@ -387,11 +407,11 @@ class VBMenu {
   // Keep in sync with the above code at the end of createAppMenu()
   static settingsMenuIndex() {
     if (VBMenu.platform() === 'darwin' || VBMenu.platform() === 'linux') {
-      return 2
+      return 3
     }
     else {
       // win32 does not have the initial "VioletBug" menu
-      return 1
+      return 2
     }
   }
 
@@ -586,27 +606,12 @@ class VBMenu {
     }))
     index++
 
-    menu.append(new MenuItem({type: 'separator'}))
-    index++
-
     menu.append(new MenuItem({
-      label: 'Cut',
-      accelerator: 'CmdOrCtrl+X',
-      role: 'cut'
-    }))
-    index++
-
-    menu.append(new MenuItem({
-      label: 'Copy',
-      accelerator: 'CmdOrCtrl+C',
-      role: 'copy'
-    }))
-    index++
-
-    menu.append(new MenuItem({
-      label: 'Paste',
-      accelerator: 'CmdOrCtrl+V',
-      role: 'paste'
+      label: 'Cursor to Input',
+      accelerator: 'CmdOrCtrl+I',
+      click(menuItem, browserWindow, event) {
+        browserWindow.webContents.send('focusInput', connId)
+      }
     }))
     index++
 

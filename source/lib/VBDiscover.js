@@ -108,7 +108,7 @@ function ssdpSearchRequest(discoveryCallback) {
 // Listen for SSDP discovery NOTIFY responses
 // These should be received whenever a device connects to the network
 function ssdpNotify(discoveryCallback) {
-  let notifySocket = dgram.createSocket('udp4')
+  let notifySocket = dgram.createSocket({type: 'udp4', reuseAddr: true})
 
   notifySocket.on('message', (msg, rinfo) => {
     const ssdpResponse = msg.toString()

@@ -484,9 +484,10 @@ pre.editor-colors .fold-marker:after {
 }
 </style>
   </head>
-  <body class='markdown-preview' data-use-github-style><h1 style="color: white; background-color: #af9cd9; padding: 2em 0; text-align: center"><img src="https://github.com/belltown/violetbug/blob/master/doc/icon.png" alt=""> VioletBug — Roku Debugger Graphical Interface</h1>
+  <body class='markdown-preview' data-use-github-style><h1 style="color: white; background-color: #af9cd9; padding: 2em 0; text-align: center"><img src="https://raw.githubusercontent.com/belltown/violetbug/master/doc/icon.png" alt=""> VioletBug — Roku Debugger Graphical Interface</h1>
 
 <p>VioletBug is a cross-platform desktop application providing a graphical interface to the Roku Debugger as an alternative to Telnet. It is similar to PurpleBug, <a href="https://belltown-roku.tk/PurpleBug">https://belltown-roku.tk/PurpleBug</a>, which is still supported; however, PurpleBug only runs on Windows PCs, and is closed-source. VioletBug, in contrast, is open-source running under <a href="http://electron.atom.io/">Electron</a> and <a href="https://nodejs.org">Node.js</a>, written entirely in HTML, CSS and JavaScript. The source code can be found on <a href="https://github.com/belltown/violetbug">GitHub</a>.</p>
+<p>Note that VioletBug is not intended as a general-purpose Telnet client, and as such only offers features deemed to be relevant to debugging a Roku device, e.g. Rokus can only be addressed by IP address, not by host name; and only well-known ports used by the Roku are supported.</p>
 <h2 id="features">Features</h2>
 <ul>
 <li>Runs under Windows (7+), macOS (10.9+), and linux</li>
@@ -517,7 +518,7 @@ pre.editor-colors .fold-marker:after {
 <p>VioletBug can be downloaded on Windows using either an automatic &quot;One-Click&quot; NSIS installer, or by manual installation. If one method doesn&#39;t work, try the other.</p>
 <h6 id="automatic-installation">Automatic Installation</h6>
 <ul>
-<li>Download <code>VioletBug Setup x.y.z.exe</code> from <a href="https://github.com/belltown/violetbug/releases/latest">https://github.com/belltown/violetbug/releases/latest</a></li>
+<li>Download <code>VioletBug.Setup.x.y.z.exe</code> from <a href="https://github.com/belltown/violetbug/releases/latest">https://github.com/belltown/violetbug/releases/latest</a></li>
 <li>Run the downloaded file to install VioletBug. It may appear as if nothing&#39;s happening for a minute or so, depending on how your computer is configured. Be patient and the installation should complete, then VioletBug will launch</li>
 <li>Pin the VioletBug icon to the Taskbar for convenient access, or use the desktop shortcut icon</li>
 <li>You may have to disable your anti-virus protection (unless using only Windows Defender), before downloading and running the installer</li>
@@ -535,23 +536,24 @@ pre.editor-colors .fold-marker:after {
 <p>Compiled binaries and installers for various linux distributions are provided at <a href="https://github.com/belltown/violetbug/releases/latest">https://github.com/belltown/violetbug/releases/latest</a></p>
 <h6 id="to-download-compiled-binaries-for-most-linux-distributions">To download compiled binaries for most linux distributions</h6>
 <p>Download <code>violetbug-linux.zip</code> from <a href="https://github.com/belltown/violetbug/releases/latest">https://github.com/belltown/violetbug/releases/latest</a>, e.g:</p>
-<pre class="editor-colors lang-text"><div class="line"><span class="syntax--text syntax--plain"><span class="syntax--meta syntax--paragraph syntax--text"><span>cd&nbsp;~/Downloads</span></span></span></div><div class="line"><span class="syntax--text syntax--plain"><span class="syntax--meta syntax--paragraph syntax--text"><span>wget&nbsp;</span><span class="syntax--markup syntax--underline syntax--link syntax--https syntax--hyperlink"><span>https://github.com/belltown/violetbug/releases/download/vx.y.z/violetbug.zip</span></span></span></span></div></pre><p>Unzip to the appropriate folder, e.g. <code>/opt</code></p>
-<pre class="editor-colors lang-text"><div class="line"><span class="syntax--text syntax--plain"><span class="syntax--meta syntax--paragraph syntax--text"><span>sudo&nbsp;unzip&nbsp;-o&nbsp;-q&nbsp;violetbug.zip&nbsp;-d&nbsp;/opt</span></span></span></div></pre><p>Run the application:</p>
+<pre class="editor-colors lang-text"><div class="line"><span class="syntax--text syntax--plain"><span class="syntax--meta syntax--paragraph syntax--text"><span>cd&nbsp;~/Downloads</span></span></span></div><div class="line"><span class="syntax--text syntax--plain"><span class="syntax--meta syntax--paragraph syntax--text"><span>wget&nbsp;</span><span class="syntax--markup syntax--underline syntax--link syntax--https syntax--hyperlink"><span>https://github.com/belltown/violetbug/releases/download/vx.y.z/violetbug-linux.zip</span></span></span></span></div></pre><p>Unzip to the appropriate folder, e.g. <code>/opt</code></p>
+<pre class="editor-colors lang-text"><div class="line"><span class="syntax--text syntax--plain"><span class="syntax--meta syntax--paragraph syntax--text"><span>sudo&nbsp;unzip&nbsp;-o&nbsp;-q&nbsp;violetbug-linux.zip&nbsp;-d&nbsp;/opt</span></span></span></div></pre><p>Run the application:</p>
 <pre class="editor-colors lang-text"><div class="line"><span class="syntax--text syntax--plain"><span>&nbsp;</span><span class="syntax--meta syntax--paragraph syntax--text"><span>/opt/violetbug-linux-x64/violetbug</span></span></span></div></pre><p>Attach to the Launcher for convenience. If you don&#39;t see the application icon, try copying the file <code>/opt/violetbug-linux-x64/resources/app/violetbug.desktop</code> to <code>~/.local/share/applications/violetbug.desktop</code>, editing it if necessary for the correct path name/icon file, etc.</p>
 <h6 id="to-download-installers-for-specific-linux-distributions">To download installers for specific linux distributions</h6>
 <p>Download one of the following installers:</p>
 <ul>
 <li>deb package (Ubuntu/Mint/Debian, etc)</li>
 <li>rpm package (Fedora/CentOS/Red Hat, etc)</li>
-<li>freebsd package (FreeBSD)</li>
 <li>AppImage package file (multiple linux distributions)</li>
 </ul>
 <p>AppImage files should run on any linux distribution that supports <a href="http://appimage.org/">AppImage</a>:</p>
 <ul>
-<li>Set the file to be executable, e.g: <code>chmod u+x violetbug*.AppImage</code></li>
-<li>Run the file, e.g: <code>./violetbug*.AppImage</code></li>
+<li>First, download the .AppImage file into any directory from which you can execute applications</li>
+<li>Next, <strong>set the file to be executable</strong>, e.g: <code>chmod u+x violetbug*.AppImage</code>, or set executable file property in File Manager GUI</li>
+<li>Finally, run the file, e.g: <code>./violetbug*.AppImage</code></li>
 <li>All required dependencies and resources are contained in the <code>.AppImage</code> file. Nothing else gets installed. Run the file from any location; delete it to uninstall.</li>
 </ul>
+<p>BSD variants, such as FreeBSD, are not supported.</p>
 <h6 id="linux-dependency-issues">Linux dependency issues</h6>
 <p>If you get this error on linux: <strong>error while loading shared libraries: libXss.so.1: cannot open shared object file: No such file or directory</strong>, then install libXScrnSaver, e.g: <code>sudo yum install libXScrnSaver</code>.</p>
 <h3 id="firewall-configuration">Firewall Configuration</h3>
@@ -567,6 +569,6 @@ pre.editor-colors .fold-marker:after {
 <p>Contact <a href="https://forums.roku.com/ucp.php?i=pm&amp;mode=compose&amp;u=37784">belltown</a> through the <a href="https://forums.roku.com/viewforum.php?f=34">Roku Forums</a></p>
 <p>File a GitHub issue at <a href="https://github.com/belltown/violetbug/issues">https://github.com/belltown/violetbug/issues</a></p>
 <h2 id="screenshots">Screenshots</h2>
-<p><img src="https://github.com/belltown/violetbug/blob/master/doc/ScreenShotRokus.png" alt="Rokus"></p>
-<p><img src="https://github.com/belltown/violetbug/blob/master/doc/ScreenShotConn.png" alt="Connections"></p></body>
+<p><img src="https://raw.githubusercontent.com/belltown/violetbug/master/doc/ScreenShotRokus.png" alt="Rokus"></p>
+<p><img src="https://raw.githubusercontent.com/belltown/violetbug/master/doc/ScreenShotConn.png" alt="Connections"></p></body>
 </html>

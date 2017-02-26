@@ -1,6 +1,8 @@
- <h1 style="color: white; background-color: #af9cd9; padding: 2em 0; text-align: center">![](https://github.com/belltown/violetbug/blob/master/doc/icon.png) VioletBug — Roku Debugger Graphical Interface</h1>
+ <h1 style="color: white; background-color: #af9cd9; padding: 2em 0; text-align: center">![](https://raw.githubusercontent.com/belltown/violetbug/master/doc/icon.png) VioletBug — Roku Debugger Graphical Interface</h1>
 
 VioletBug is a cross-platform desktop application providing a graphical interface to the Roku Debugger as an alternative to Telnet. It is similar to PurpleBug, https://belltown-roku.tk/PurpleBug, which is still supported; however, PurpleBug only runs on Windows PCs, and is closed-source. VioletBug, in contrast, is open-source running under [Electron](http://electron.atom.io/) and [Node.js](https://nodejs.org), written entirely in HTML, CSS and JavaScript. The source code can be found on [GitHub](https://github.com/belltown/violetbug).
+
+Note that VioletBug is not intended as a general-purpose Telnet client, and as such only offers features deemed to be relevant to debugging a Roku device, e.g. Rokus can only be addressed by IP address, not by host name; and only well-known ports used by the Roku are supported.
 
 ## Features
 
@@ -35,7 +37,7 @@ VioletBug can be downloaded on Windows using either an automatic "One-Click" NSI
 
 ###### Automatic Installation
 
-* Download `VioletBug Setup x.y.z.exe` from https://github.com/belltown/violetbug/releases/latest
+* Download `VioletBug.Setup.x.y.z.exe` from https://github.com/belltown/violetbug/releases/latest
 * Run the downloaded file to install VioletBug. It may appear as if nothing's happening for a minute or so, depending on how your computer is configured. Be patient and the installation should complete, then VioletBug will launch
 * Pin the VioletBug icon to the Taskbar for convenient access, or use the desktop shortcut icon
 * You may have to disable your anti-virus protection (unless using only Windows Defender), before downloading and running the installer
@@ -58,12 +60,12 @@ Compiled binaries and installers for various linux distributions are provided at
 Download `violetbug-linux.zip` from https://github.com/belltown/violetbug/releases/latest, e.g:
 ```
 cd ~/Downloads
-wget https://github.com/belltown/violetbug/releases/download/vx.y.z/violetbug.zip
+wget https://github.com/belltown/violetbug/releases/download/vx.y.z/violetbug-linux.zip
 ```
 
 Unzip to the appropriate folder, e.g. `/opt`
 ```
-sudo unzip -o -q violetbug.zip -d /opt
+sudo unzip -o -q violetbug-linux.zip -d /opt
 ```
 
 Run the application:
@@ -79,14 +81,16 @@ Download one of the following installers:
 
 - deb package (Ubuntu/Mint/Debian, etc)
 - rpm package (Fedora/CentOS/Red Hat, etc)
-- freebsd package (FreeBSD)
 - AppImage package file (multiple linux distributions)
 
 AppImage files should run on any linux distribution that supports [AppImage](http://appimage.org/):
 
-* Set the file to be executable, e.g: `chmod u+x violetbug*.AppImage`
-* Run the file, e.g: `./violetbug*.AppImage`
+* First, download the .AppImage file into any directory from which you can execute applications
+* Next, **set the file to be executable**, e.g: `chmod u+x violetbug*.AppImage`, or set executable file property in File Manager GUI
+* Finally, run the file, e.g: `./violetbug*.AppImage`
 * All required dependencies and resources are contained in the `.AppImage` file. Nothing else gets installed. Run the file from any location; delete it to uninstall.
+
+BSD variants, such as FreeBSD, are not supported.
 
 ###### Linux dependency issues
 
@@ -149,6 +153,6 @@ File a GitHub issue at https://github.com/belltown/violetbug/issues
 
 ## Screenshots
 
-![Rokus](https://github.com/belltown/violetbug/blob/master/doc/ScreenShotRokus.png)
+![Rokus](https://raw.githubusercontent.com/belltown/violetbug/master/doc/ScreenShotRokus.png)
 
-![Connections](https://github.com/belltown/violetbug/blob/master/doc/ScreenShotConn.png)
+![Connections](https://raw.githubusercontent.com/belltown/violetbug/master/doc/ScreenShotConn.png)

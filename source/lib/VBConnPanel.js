@@ -420,13 +420,21 @@ class VBConnPanel {
     this.lastDOMTextNode = null
   }
 
-  // Clear line context menu commane or Esc key
+  // Clear line context menu command or Esc key
   clearLine() {
     this.deviceInputText.value = ''
   }
 
+  // Cursor to Input context menu command or CTRL/I key
+  focusInput() {
+    // Move the keyboard focus to the input field if it's not already there
+    if (document.activeElement !== this.deviceInputText) {
+      this.deviceInputText.focus()
+    }
+  }
+
   // connPage keydown handler
-  // This handler is specifically to handle to clear line/clean screen keys
+  // This handler is specifically to handle to clear line/clear screen keys
   // if the cursor is not positioned in the deviceInputText field
   // It is attached to the document therefore it is necessary to check
   // whether this is the currently displayed tab or not
@@ -439,6 +447,9 @@ class VBConnPanel {
           break
         case VBKeys.ESCAPE:
           this.clearLine()
+          break
+        case VBKeys.CTRLI:
+          this.focusInput()
           break
       }
     }
@@ -491,6 +502,14 @@ class VBConnPanel {
       case VBKeys.ALTC:
         this.clearScreen()
         break
+
+      // No need to listen for ctrl-i (Cursor to Input), because the cursor
+      // is already focused in the input text field ...
+
+      // Check if Cursor to Input (ctrl-i) pressed
+      //case VBKeys.CTRLI:
+      //  this.focusInput()
+      //  break
 
       // Check for shortcut keys
       case VBKeys.CTRL0:
@@ -608,6 +627,11 @@ class VBConnPanel {
   // Main menu/context menu event listener for Clear Line
   onClearLine() {
     this.clearLine()
+  }
+
+  // Context menu event listener for Cursor to Input
+  onFocusInput() {
+    this.focusInput()
   }
 
   // Event listener for Auto Scroll checkbox

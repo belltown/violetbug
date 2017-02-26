@@ -28,6 +28,7 @@ class VBKeys {
     // Keys with modifiers
     if (key === 'Tab'  &&  shift && !alt && !ctrl && !meta) return this.SHTAB
     if (key === 'KeyC' && !shift && !alt &&  ctrl && !meta) return this.CTRLC
+    if (key === 'KeyI' && !shift && !alt &&  ctrl && !meta) return this.CTRLI
     if (key === 'KeyC' && !shift &&  alt && !ctrl && !meta) return this.ALTC
 
     // Shortcut keys
@@ -53,7 +54,8 @@ VBKeys.TAB      = 7
 VBKeys.DEL      = 8
 VBKeys.SHTAB    = 9
 VBKeys.CTRLC    = 10
-VBKeys.ALTC     = 11
+VBKeys.CTRLI    = 11
+VBKeys.ALTC     = 12
 VBKeys.CTRL0    = 20
 VBKeys.CTRL1    = 21
 VBKeys.CTRL2    = 22

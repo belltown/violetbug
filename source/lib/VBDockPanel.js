@@ -104,6 +104,8 @@ class VBDockPanel {
                                         this.doConn(connId, 'clearScreen'))
     ipcRenderer.on('clearLine',   (e, connId) =>
                                         this.doConn(connId, 'clearLine'))
+    ipcRenderer.on('focusInput',  (e, connId) =>
+                                        this.doConn(connId, 'focusInput'))
 
   }
 
@@ -140,6 +142,7 @@ class VBDockPanel {
           case 'reConnect':   return conn.onReConnect()
           case 'clearScreen': return conn.onClearScreen()
           case 'clearLine':   return conn.onClearLine()
+          case 'focusInput':  return conn.onFocusInput()
         }
       }
       catch(e) {
