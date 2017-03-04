@@ -5,7 +5,6 @@
  */
 
 // Node.js modules
-const os = require('os')
 const StringDecoder = require('string_decoder').StringDecoder
 
 // Electron modules
@@ -41,6 +40,9 @@ class VBConnPanel {
     if (!this.config) {
       ipcRenderer.send('fatal-error-dialog', 'Unable to read config file')
     }
+
+    // The webContents object for this renderer process
+    this.webContents = remote.getCurrentWebContents()
 
     // true if a floated tab
     this.isFloated = isFloated
@@ -87,6 +89,19 @@ class VBConnPanel {
     // DOM element for the input prompt
     this.promptText = null
 
+    // DOM elements for the Find panel
+    this.findContainer = null
+    this.findTextInput = null
+    this.findMatchResult = null
+    this.findDownButton = null
+    this.findUpButton = null
+    this.findCloseButton = null
+
+    // State variables for the Find panel
+    this.requestId = 0
+    this.findDown = true
+    this.findTextSave = ''
+
     // DOM element for this connection's page
     // (the .connPage class within the #tabContentContainer div)
     this.connPage = null
@@ -120,6 +135,7 @@ class VBConnPanel {
     this.onBgColorChanged = this._onBgColorChanged.bind(this)
     this.onFgColorChanged = this._onFgColorChanged.bind(this)
     this.onShortcutsChanged = this._onShortcutsChanged.bind(this)
+    this.onFindInPageResult = this._onFindInPageResult.bind(this)
   }
 
   init() {
@@ -130,13 +146,16 @@ class VBConnPanel {
     // Application-wide event-handlers [from app menu and/or context menu]
     // Each connection in the Renderer process handles each of these events
 
-    ipcRenderer.on('autoScrollChanged', this.onAutoScrollChanged)
-    ipcRenderer.on('autoWrapChanged',   this.onAutoWrapChanged)
-    ipcRenderer.on('fontFamilyChanged', this.onFontFamilyChanged)
-    ipcRenderer.on('fontSizeChanged',   this.onFontSizeChanged)
-    ipcRenderer.on('bgColorChanged',    this.onBgColorChanged)
-    ipcRenderer.on('fgColorChanged',    this.onFgColorChanged)
-    ipcRenderer.on('shortcutsChanged',  this.onShortcutsChanged)
+    ipcRenderer.on('autoScrollChanged',   this.onAutoScrollChanged)
+    ipcRenderer.on('autoWrapChanged',     this.onAutoWrapChanged)
+    ipcRenderer.on('fontFamilyChanged',   this.onFontFamilyChanged)
+    ipcRenderer.on('fontSizeChanged',     this.onFontSizeChanged)
+    ipcRenderer.on('bgColorChanged',      this.onBgColorChanged)
+    ipcRenderer.on('fgColorChanged',      this.onFgColorChanged)
+    ipcRenderer.on('shortcutsChanged',    this.onShortcutsChanged)
+
+    // Found in page event
+    this.webContents.on('found-in-page',  this.onFindInPageResult)
 
     // Set up a VBSocket object for the connection
     this.vbSocket = this.doCreateSocket()
@@ -174,6 +193,7 @@ class VBConnPanel {
     ipcRenderer.removeListener('bgColorChanged', this.onBgColorChanged)
     ipcRenderer.removeListener('fgColorChanged', this.onFgColorChanged)
     ipcRenderer.removeListener('shortcutsChanged', this.onShortcutsChanged)
+    this.webContents.removeListener('found-in-page',  this.onFindInPageResult)
 
     // Deallocate DOM resources
     while (this.connPage.firstChild) {
@@ -240,6 +260,14 @@ class VBConnPanel {
     this.deviceInputText = this.connPage.querySelector('.deviceInputText')
     this.promptText = this.connPage.querySelector('.promptText')
 
+    // DOM references for the Find panel
+    this.findContainer = this.connPage.querySelector('.findContainer')
+    this.findTextInput = this.connPage.querySelector('.findTextInput')
+    this.findMatchResult = this.connPage.querySelector('.findMatchResult')
+    this.findDownButton = this.connPage.querySelector('.findDownButton')
+    this.findUpButton = this.connPage.querySelector('.findUpButton')
+    this.findCloseButton = this.connPage.querySelector('.findCloseButton')
+
     // Add the new connection panel to the tab container
     connContainer.appendChild(this.connPage)
 
@@ -254,6 +282,26 @@ class VBConnPanel {
     // Set wrapping from current config state
     this.deviceOutputPanel.style.whiteSpace = this.config.autoWrap ? 'pre-wrap'
                                                                    : 'pre';
+
+    // Add event handlers for the Find panel
+    this.findTextInput.addEventListener('keydown', e => {
+      this.onFindTextInputKeydown.call(this, e)
+    })
+    this.findDownButton.addEventListener('focus', e => {
+      this.onFindDownButtonFocus.call(this, e)
+    })
+    this.findUpButton.addEventListener('focus', e => {
+      this.onFindUpButtonFocus.call(this, e)
+    })
+    this.findDownButton.addEventListener('click', e => {
+      this.onFindDownButtonClick.call(this, e)
+    })
+    this.findUpButton.addEventListener('click', e => {
+      this.onFindUpButtonClick.call(this, e)
+    })
+    this.findCloseButton.addEventListener('click', e => {
+      this.onFindCloseButtonClick.call(this, e)
+    })
 
     // Make the new connection html panel visible
     this.connPage.style.display = 'table'
@@ -451,6 +499,9 @@ class VBConnPanel {
         case VBKeys.CTRLI:
           this.focusInput()
           break
+        case VBKeys.CTRLF:
+          this.findInPage()
+          break
       }
     }
   }
@@ -634,6 +685,11 @@ class VBConnPanel {
     this.focusInput()
   }
 
+  // Context menu event listener for Find command
+  onFindInPage() {
+    this.findInPage()
+  }
+
   // Event listener for Auto Scroll checkbox
   _onAutoScrollChanged(e, state) {
     this.config.autoScroll = state
@@ -708,6 +764,133 @@ class VBConnPanel {
     for (let item of document.getElementsByClassName('deviceOutputPanel')) {
       item.style.whiteSpace = this.config.autoWrap ? 'pre-wrap' : 'pre';
     }
+  }
+
+  /****************************************************************************/
+
+  // Find in page context menu command or CTRL/F key (toggle)
+  findInPage() {
+    // Find panel on display -- close it
+    if (this.findContainer.style.display === 'table-row') {
+      this.doFindClose()
+    }
+    // Find panel not on display -- display it
+    else {
+      // If the user has selected some text, put it in the find box
+      let isSelected = false
+      let selectedText = window.getSelection().toString()
+      if (selectedText.match(/\S/)) {
+        this.findTextInput.value = selectedText
+        isSelected = true
+      }
+      this.findContainer.style.display = 'table-row'
+      this.findTextInput.focus()
+      if (isSelected) {
+        this.doFind()
+      }
+    }
+  }
+
+  // Event handler called when a found-in-page result is received
+  _onFindInPageResult(e, result) {
+    if (result.requestId === this.requestId) {
+      if (this.findDown) {
+        this.findDownButton.focus()
+      }
+      else {
+        this.findUpButton.focus()
+      }
+      const matchText = result.activeMatchOrdinal + '/' + result.matches
+      this.findMatchResult.textContent = matchText
+      this.findTextInput.value = this.findTextSave
+    }
+  }
+
+  // Event handler for the ENTER keypress in the Find text box
+  onFindTextInputKeydown(e) {
+    if (VBKeys.keyVal(e) === VBKeys.ENTER) {
+      this.doFind()
+    }
+  }
+
+  // The Down button now has focus; highlight accordingly
+  onFindDownButtonFocus(e) {
+    this.findDownButton.classList.add('findActive')
+    this.findUpButton.classList.remove('findActive')
+    this.findDown = true
+  }
+
+  // The Up button now has focus; highlight accordingly
+  onFindUpButtonFocus(e) {
+    this.findUpButton.classList.add('findActive')
+    this.findDownButton.classList.remove('findActive')
+    this.findDown = false
+  }
+
+  // The user has clicked the Down button; focus and start downward search
+  onFindDownButtonClick(e) {
+    this.findDownButton.focus()
+    this.doFind()
+  }
+
+  // The user has clicked the Up button; focus and start upward search
+  onFindUpButtonClick(e) {
+    this.findUpButton.focus()
+    this.doFind()
+  }
+
+  // Search for the specified text string
+  doFind() {
+    let searchText = this.findTextInput.value
+    if (searchText.match(/\S/)) {
+      this.findTextSave = searchText
+      this.findTextInput.value = ''
+      this.doFindInPage(searchText)
+    }
+    else {
+      this.findMatchResult.textContent = ''
+      this.findTextSave = ''
+      this.doStopFindInPage()
+    }
+  }
+
+  // Issue a findInPage request via the main process (remote call)
+  // Note that there appear to be several bugs in the underlying
+  // Chromium implementation of findInPage:
+  // First, the wordStart and medialCapitalAsWordStart options don't appear
+  // to work at all;
+  // Second, the matchCase option, although it works most of the time,
+  // still doesn't work correctly in all cases
+  // Consequently, those options are not implemented here
+  doFindInPage(searchText) {
+    const options = {
+      forward: this.findDown,
+      findNext: false,
+    }
+    this.requestId = this.webContents.findInPage(searchText, options)
+  }
+
+  // Issue a stopFindInPage request via the main process (remote call)
+  // Note that there appears to be a bug in the underlying stopFindInPage
+  // implementation if 'clearSelection' is used in that a call to focus(),
+  // to get the cursor back to the input text field, does not work
+  // Using 'keepSelection' instead seems to avoid this issue
+  doStopFindInPage() {
+    this.webContents.stopFindInPage('keepSelection')
+  }
+
+  // Close the Find panel if Ctrl/F selected or the Close button clicked
+  doFindClose() {
+    this.findContainer.style.display = 'none'
+    this.findMatchResult.textContent = ''
+    this.findTextSave = ''
+    this.doStopFindInPage()
+    this.deviceInputText.focus()
+  }
+
+  // The user has clicked the Close button
+  onFindCloseButtonClick(e) {
+    this.doFindClose()
   }
 
 }

@@ -108,7 +108,7 @@
 
   // Create a browser window after Electron has finished initializing
   // ('ready' event)
-  function createWindow() {
+  function createMainWindow() {
     // Create a new BrowserWindow ('renderer')
     global.mainWindow = new BrowserWindow({
       x: config.x,
@@ -340,6 +340,11 @@
 
   }
 
+  // ----------------------------
+  // Main processing starts here
+  // ----------------------------
+
+
   // Set the Application User Model ID (AUMID) to the appId of the application
   // (Windows only)
   app.setAppUserModelId('tk.belltown-roku.violetbug')
@@ -349,7 +354,7 @@
     if (global.mainWindow === null) {
       config = readConfigFile()
       if (config) {
-        createWindow()
+        createMainWindow()
       }
     }
   })
@@ -362,7 +367,7 @@
     if (global.mainWindow === null) {
       config = readConfigFile()
       if (config) {
-        createWindow()
+        createMainWindow()
       }
     }
   })
@@ -376,6 +381,10 @@
       app.quit()
     }
   })
+
+  // ------------------------------------------------------
+  // Handle IPC communications from the renderer processes
+  // ------------------------------------------------------
 
   // Error dialog IPC from the Renderer process
   ipcMain.on('error-dialog', (e, message, detail = ' ') => {
@@ -418,6 +427,10 @@
     // Close the window
     window.close()
   })
+
+  // ---------------------------------------------------
+  // UI configuration changes: colors, fonts, shortcuts
+  // ---------------------------------------------------
 
   // If the foreground color has changed, store new color in config,
   // and broadcast to renderer processes
@@ -481,5 +494,4 @@
       win => win.webContents.send('shortcutsChanged', shortcutsJson)
     )
   })
-
 }

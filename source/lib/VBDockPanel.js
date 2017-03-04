@@ -106,7 +106,8 @@ class VBDockPanel {
                                         this.doConn(connId, 'clearLine'))
     ipcRenderer.on('focusInput',  (e, connId) =>
                                         this.doConn(connId, 'focusInput'))
-
+    ipcRenderer.on('findInPage',  (e, connId) =>
+                                        this.doConn(connId, 'findInPage'))
   }
 
   // When a menu item pertaining to a connection is clicked,
@@ -143,6 +144,7 @@ class VBDockPanel {
           case 'clearScreen': return conn.onClearScreen()
           case 'clearLine':   return conn.onClearLine()
           case 'focusInput':  return conn.onFocusInput()
+          case 'findInPage':  return conn.onFindInPage()
         }
       }
       catch(e) {

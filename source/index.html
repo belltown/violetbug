@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <link rel="stylesheet" href="index.css">
     <script src="index.js"></script>
-    <title></title>
+    <title></title><!-- ip:port for a floating tab -->
   </head>
   <body>
 
@@ -102,6 +102,32 @@
         <div id="connContainer">
           <!-- Make a copy of conn-stub for each connection tab -->
           <table id="conn-stub" class="page connPage">
+
+            <!-- Find panel -->
+            <tr class="findContainer">
+              <td>
+                <div class="findPanel">
+                  <input class="findTextInput" type="text" tabindex="0">
+                  <span class="findMatchResult" tabindex="-1"></span>
+                  <button class="findDownButton findButton findActive"
+                          tabindex="0" title="Search down">
+                    <!-- U+1F847 -->
+                    <div class=findIcon>🡇</div>
+                  </button>
+                  <button class="findUpButton findButton" tabindex="0"
+                          title="Search up">
+                    <!-- U+1F845 -->
+                    <div class="findIcon">🡅</div>
+                  </button>
+                  <button class="findCloseButton" tabindex="-1"
+                          title="Close the Find box">
+                    <!-- U+24CD -->
+                    <div class="findCloseIcon" tabindex="0">Ⓧ</div>
+                  </button>
+                </div>
+              </td>
+            </tr>
+
             <tr class="fullHeight">
               <td>
                 <!-- Device output area at the top of the viewport -->

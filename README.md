@@ -1,8 +1,12 @@
  <h1 style="color: white; background-color: #af9cd9; padding: 2em 0; text-align: center">![](https://raw.githubusercontent.com/belltown/violetbug/master/doc/icon.png) VioletBug — Roku Debugger Graphical Interface</h1>
 
+---
+
+## Windows — macOS — linux
+
 VioletBug is a cross-platform desktop application providing a graphical interface to the Roku Debugger as an alternative to Telnet. It is similar to PurpleBug, https://belltown-roku.tk/PurpleBug, which is still supported; however, PurpleBug only runs on Windows PCs, and is closed-source. VioletBug, in contrast, is open-source running under [Electron](http://electron.atom.io/) and [Node.js](https://nodejs.org), written entirely in HTML, CSS and JavaScript. The source code can be found on [GitHub](https://github.com/belltown/violetbug).
 
-Note that VioletBug is not intended as a general-purpose Telnet client, and as such only offers features deemed to be relevant to debugging a Roku device, e.g. Rokus can only be addressed by IP address, not by host name; and only well-known ports used by the Roku are supported.
+Note that VioletBug is not intended as a general-purpose Telnet client. Its features are geared towards debugging on a Roku. Currently, Rokus can only be addressed by IP address, not by host name; and only well-known ports used by the Roku are supported.
 
 ## Features
 
@@ -12,7 +16,7 @@ Note that VioletBug is not intended as a general-purpose Telnet client, and as s
 * Separate tabs for each Roku/port connection
 * Floating tabs (right-click the tab header)
 * Session logging for each tab
-* Clear screen/clear line
+* Clear screen/clear line/cut/copy/paste/find
 * Configurable foreground/background colors
 * Configurable font settings (9 monospace fonts included)
 * Auto scroll, auto wrap
@@ -63,7 +67,7 @@ cd ~/Downloads
 wget https://github.com/belltown/violetbug/releases/download/vx.y.z/violetbug-linux.zip
 ```
 
-Unzip to the appropriate folder, e.g. `/opt`
+Unzip to the appropriate directory, e.g. `/opt`
 ```
 sudo unzip -o -q violetbug-linux.zip -d /opt
 ```

@@ -133,141 +133,168 @@ class VBMenu {
       }
     }
 
+    function autoScrollSubmenu() {
+      return {
+        label: 'Auto scroll',
+        type: 'checkbox',
+        checked: config.autoScroll,
+        click(menuItem, browserWindow, event) {
+          const checked = menuItem.checked
+          // Update main process config object
+          config.autoScroll = checked
+          // Flush config to disk
+          g('saveConfigObject')()
+          // Make sure VioletBug and Settings menus in sync
+          VBMenu.setAppMenuSettings(checked, undefined)
+          // Notify the renderer process of the change
+          mainWindow.webContents.send('autoScrollChanged', checked)
+          floatList.forEach(
+            win => win.webContents.send('autoScrollChanged', checked)
+          )
+        }
+      }
+    }
+
+    function autoWrapSubmenu() {
+      return {
+        label: 'Auto wrap',
+        type: 'checkbox',
+        checked: config.autoWrap,
+        click(menuItem, browserWindow, event) {
+          const checked = menuItem.checked
+          // Update main process config object
+          config.autoWrap = checked
+          // Flush config to disk
+          g('saveConfigObject')()
+          // Make sure VioletBug and Settings menus in sync
+          VBMenu.setAppMenuSettings(undefined, checked)
+          // Notify the renderer process of the change
+          mainWindow.webContents.send('autoWrapChanged', checked)
+          floatList.forEach(
+            win => win.send('autoWrapChanged', checked)
+          )
+        }
+      }
+    }
+
+    function fontsSubmenu() {
+      return {
+        label: 'Fonts ...',
+        click(menuItem, browserWindow, event) {
+          // Flush the current config to disk, so font window can read it
+          g('saveConfigObject')()
+
+          // Display the fonts dialog window
+          let fontsWindow = new BrowserWindow({
+            //width: 480,
+            //height: 600,
+            title: 'Fonts',
+            icon: VBIcons.icon,
+            show: false,
+            parent: browserWindow,
+            modal: true,
+            backgroundColor: '#FFF',
+            webPreferences: {
+              defaultEncoding: 'UTF-8',
+              experimentalFeatures: true
+            }
+          })
+          fontsWindow.setMenu(null)
+          fontsWindow.loadURL('file://' +
+                              path.join(__dirname, '..', 'fonts.html'))
+          fontsWindow.once('ready-to-show', () => {
+            fontsWindow.show()
+          })
+          fontsWindow.on('closed', () => {
+            fontsWindow = null
+          })
+        }
+      }
+    }
+
+    function colorsSubmenu() {
+      return {
+        label: 'Colors ...',
+        click(menuItem, browserWindow, event) {
+          // Flush the current config to disk, so color window can read it
+          g('saveConfigObject')()
+
+          // Display the colors dialog window
+          let colorsWindow = new BrowserWindow({
+            //width: 520,
+            //height: 520,
+            title: 'Colors',
+            icon: VBIcons.icon,
+            show: false,
+            parent: browserWindow,
+            modal: true,
+            backgroundColor: '#FFF',
+            webPreferences: {
+              defaultEncoding: 'UTF-8',
+              experimentalFeatures: true
+            }
+          })
+          colorsWindow.setMenu(null)
+          colorsWindow.loadURL('file://' +
+                                path.join(__dirname, '..', 'colors.html'))
+          colorsWindow.once('ready-to-show', () => {
+            colorsWindow.show()
+          })
+          colorsWindow.on('closed', () => {
+            colorsWindow = null
+          })
+        }
+      }
+    }
+
+    function shortcutsSubmenu() {
+      return {
+        label: 'Shortcuts ...',
+        click(menuItem, browserWindow, event) {
+          // Flush the current config to disk, so font window can read it
+          g('saveConfigObject')()
+
+          // Display the fonts dialog window
+          let shortcutsWindow = new BrowserWindow({
+            //width: 640,
+            //height: 575,
+            title: 'Shortcuts',
+            icon: VBIcons.icon,
+            show: false,
+            parent: browserWindow,
+            modal: true,
+            backgroundColor: '#FFF',
+            webPreferences: {
+              defaultEncoding: 'UTF-8',
+              experimentalFeatures: true
+            }
+          })
+          shortcutsWindow.setMenu(null)
+          shortcutsWindow.loadURL('file://' +
+                          path.join(__dirname, '..', 'shortcuts.html'))
+          shortcutsWindow.once('ready-to-show', () => {
+            shortcutsWindow.show()
+          })
+          shortcutsWindow.on('closed', () => {
+            shortcutsWindow = null
+          })
+        }
+      }
+    }
+
     function settingsMenu() {
       return {
         label: 'Settings',
-        submenu: [{
-            label: 'Auto scroll',
-            type: 'checkbox',
-            checked: config.autoScroll,
-            click(menuItem, browserWindow, event) {
-              const checked = menuItem.checked
-              // Update main process config object
-              config.autoScroll = checked
-              // Flush config to disk
-              g('saveConfigObject')()
-              // Make sure VioletBug and Settings menus in sync
-              VBMenu.setAppMenuSettings(checked, undefined)
-              // Notify the renderer process of the change
-              mainWindow.webContents.send('autoScrollChanged', checked)
-              floatList.forEach(
-                win => win.webContents.send('autoScrollChanged', checked)
-              )
-            }
-          },{
-            label: 'Auto wrap',
-            type: 'checkbox',
-            checked: config.autoWrap,
-            click(menuItem, browserWindow, event) {
-              const checked = menuItem.checked
-              // Update main process config object
-              config.autoWrap = checked
-              // Flush config to disk
-              g('saveConfigObject')()
-              // Make sure VioletBug and Settings menus in sync
-              VBMenu.setAppMenuSettings(undefined, checked)
-              // Notify the renderer process of the change
-              mainWindow.webContents.send('autoWrapChanged', checked)
-              floatList.forEach(
-                win => win.send('autoWrapChanged', checked)
-              )
-            }
-          },{
-            label: 'Fonts ...',
-            click(menuItem, browserWindow, event) {
-              // Flush the current config to disk, so font window can read it
-              g('saveConfigObject')()
-
-              // Display the fonts dialog window
-              let fontsWindow = new BrowserWindow({
-                //width: 480,
-                //height: 600,
-                title: 'Fonts',
-                icon: VBIcons.icon,
-                show: false,
-                parent: browserWindow,
-                modal: true,
-                backgroundColor: '#FFF',
-                webPreferences: {
-                  defaultEncoding: 'UTF-8',
-                  experimentalFeatures: true
-                }
-              })
-              fontsWindow.setMenu(null)
-              fontsWindow.loadURL('file://' +
-                                  path.join(__dirname, '..', 'fonts.html'))
-              fontsWindow.once('ready-to-show', () => {
-                fontsWindow.show()
-              })
-              fontsWindow.on('closed', () => {
-                fontsWindow = null
-              })
-            }
-          },{
-            label: 'Colors ...',
-            click(menuItem, browserWindow, event) {
-              // Flush the current config to disk, so color window can read it
-              g('saveConfigObject')()
-
-              // Display the colors dialog window
-              let colorsWindow = new BrowserWindow({
-                //width: 520,
-                //height: 520,
-                title: 'Colors',
-                icon: VBIcons.icon,
-                show: false,
-                parent: browserWindow,
-                modal: true,
-                backgroundColor: '#FFF',
-                webPreferences: {
-                  defaultEncoding: 'UTF-8',
-                  experimentalFeatures: true
-                }
-              })
-              colorsWindow.setMenu(null)
-              colorsWindow.loadURL('file://' +
-                                    path.join(__dirname, '..', 'colors.html'))
-              colorsWindow.once('ready-to-show', () => {
-                colorsWindow.show()
-              })
-              colorsWindow.on('closed', () => {
-                colorsWindow = null
-              })
-            }
-          },{
-            label: 'Shortcuts ...',
-            click(menuItem, browserWindow, event) {
-              // Flush the current config to disk, so font window can read it
-              g('saveConfigObject')()
-
-              // Display the fonts dialog window
-              let shortcutsWindow = new BrowserWindow({
-                //width: 640,
-                //height: 575,
-                title: 'Shortcuts',
-                icon: VBIcons.icon,
-                show: false,
-                parent: browserWindow,
-                modal: true,
-                backgroundColor: '#FFF',
-                webPreferences: {
-                  defaultEncoding: 'UTF-8',
-                  experimentalFeatures: true
-                }
-              })
-              shortcutsWindow.setMenu(null)
-              shortcutsWindow.loadURL('file://' +
-                              path.join(__dirname, '..', 'shortcuts.html'))
-              shortcutsWindow.once('ready-to-show', () => {
-                shortcutsWindow.show()
-              })
-              shortcutsWindow.on('closed', () => {
-                shortcutsWindow = null
-              })
-            }
-          },{
+        submenu: [
+          autoScrollSubmenu(),
+          autoWrapSubmenu(),
+          fontsSubmenu(),
+          colorsSubmenu(),
+          shortcutsSubmenu(),
+          {
             type: 'separator'
-          },{
+          },
+          {
             label: "Right-click in a connection's window for more options",
             sublabel: "(log, float, re-connect, close, clear screen, etc)"
           }
@@ -608,9 +635,21 @@ class VBMenu {
 
     menu.append(new MenuItem({
       label: 'Cursor to Input',
-      accelerator: 'CmdOrCtrl+I',
+      accelerator: 'Ctrl+I',
       click(menuItem, browserWindow, event) {
         browserWindow.webContents.send('focusInput', connId)
+      }
+    }))
+    index++
+
+    menu.append(new MenuItem({type: 'separator'}))
+    index++
+
+    menu.append(new MenuItem({
+      label: 'Find (toggle)',
+      accelerator: 'CmdOrCtrl+F',
+      click(menuItem, browserWindow, event) {
+        browserWindow.webContents.send('findInPage', connId)
       }
     }))
     index++
@@ -619,7 +658,7 @@ class VBMenu {
 
   }
 
-  static clearApplicationMenu () {
+  static clearApplicationMenu() {
     Menu.setApplicationMenu(null)
   }
 

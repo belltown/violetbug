@@ -1,5 +1,6 @@
 /* NOTE: WHEN CHANGING THIS FILE, CHANGE float.css TOO!!! */
 
+
 @import './fontList.css';
 
 html {
@@ -215,7 +216,6 @@ input {
 }
 
 #deviceListPage *:focus {
-  /*outline: -webkit-focus-ring-color auto;*/
   outline: #009900 auto;
   outline-width: thin;
 }
@@ -293,7 +293,6 @@ input {
 fieldset {
   margin: 5px 5px 5px 5px;
   color: #6798a2;
-  /*border: 1px solid #6798a266;*/
   border: 1px solid #98a20066;
   border-radius: 3px;
 }
@@ -500,4 +499,80 @@ pre {
   width: 100%;
   cursor: text;
   padding: 3px 0;
+}
+
+/*******************************************************************/
+/* Find panel                                                      */
+/*******************************************************************/
+
+.findContainer {
+  display: none;   /* table-row or none */
+  -webkit-user-select: none;
+}
+
+.findPanel {
+  display: grid;
+  grid-template-columns: 1fr repeat(4,auto);
+  align-items: center;
+  background-color: #303030;
+  border: 0.15em solid #d69c19;
+  border-radius: 0.4em;
+  margin: 0 0.1em 0.25em 0.1em;
+  font-size: 1em;
+}
+
+.findTextInput {
+  color: #DDD;
+  margin-left: 0.25em;
+}
+
+.findMatchResult {
+  color: #888;
+  margin: 0 0.5em;
+}
+
+.findButton {
+  background-color: #151515;
+  color: #efd29b;
+  margin: 0.1em 0 0.1em 0.5em;
+  border: 0.1em solid #d69c19;
+  border-radius: 0.4em;
+  text-decoration: none;
+  padding: 0.15em 0;
+  width: 4em;
+  outline: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.findActive, .findButton:focus {
+  border: 0.15em solid #158615;
+}
+
+.findIcon {
+  font-size: 1.0em;
+  box-sizing: border-box;
+}
+
+.findCloseButton {
+  background-color: #303030;
+  color: #303030;
+  margin-left: 1em;
+  margin-right: 1em;
+  border: none;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.findCloseIcon {
+  color: #d69c19;
+  font-size: 1.3em;
+}
+
+.findCloseIcon:focus {
+  color: red;
+  outline: none;
 }

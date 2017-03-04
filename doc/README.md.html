@@ -486,8 +486,10 @@ pre.editor-colors .fold-marker:after {
   </head>
   <body class='markdown-preview' data-use-github-style><h1 style="color: white; background-color: #af9cd9; padding: 2em 0; text-align: center"><img src="https://raw.githubusercontent.com/belltown/violetbug/master/doc/icon.png" alt=""> VioletBug — Roku Debugger Graphical Interface</h1>
 
+<hr>
+<h2 id="windows-macos-linux">Windows — macOS — linux</h2>
 <p>VioletBug is a cross-platform desktop application providing a graphical interface to the Roku Debugger as an alternative to Telnet. It is similar to PurpleBug, <a href="https://belltown-roku.tk/PurpleBug">https://belltown-roku.tk/PurpleBug</a>, which is still supported; however, PurpleBug only runs on Windows PCs, and is closed-source. VioletBug, in contrast, is open-source running under <a href="http://electron.atom.io/">Electron</a> and <a href="https://nodejs.org">Node.js</a>, written entirely in HTML, CSS and JavaScript. The source code can be found on <a href="https://github.com/belltown/violetbug">GitHub</a>.</p>
-<p>Note that VioletBug is not intended as a general-purpose Telnet client, and as such only offers features deemed to be relevant to debugging a Roku device, e.g. Rokus can only be addressed by IP address, not by host name; and only well-known ports used by the Roku are supported.</p>
+<p>Note that VioletBug is not intended as a general-purpose Telnet client. Its features are geared towards debugging on a Roku. Currently, Rokus can only be addressed by IP address, not by host name; and only well-known ports used by the Roku are supported.</p>
 <h2 id="features">Features</h2>
 <ul>
 <li>Runs under Windows (7+), macOS (10.9+), and linux</li>
@@ -496,7 +498,7 @@ pre.editor-colors .fold-marker:after {
 <li>Separate tabs for each Roku/port connection</li>
 <li>Floating tabs (right-click the tab header)</li>
 <li>Session logging for each tab</li>
-<li>Clear screen/clear line</li>
+<li>Clear screen/clear line/cut/copy/paste/find</li>
 <li>Configurable foreground/background colors</li>
 <li>Configurable font settings (9 monospace fonts included)</li>
 <li>Auto scroll, auto wrap</li>
@@ -536,7 +538,7 @@ pre.editor-colors .fold-marker:after {
 <p>Compiled binaries and installers for various linux distributions are provided at <a href="https://github.com/belltown/violetbug/releases/latest">https://github.com/belltown/violetbug/releases/latest</a></p>
 <h6 id="to-download-compiled-binaries-for-most-linux-distributions">To download compiled binaries for most linux distributions</h6>
 <p>Download <code>violetbug-linux.zip</code> from <a href="https://github.com/belltown/violetbug/releases/latest">https://github.com/belltown/violetbug/releases/latest</a>, e.g:</p>
-<pre class="editor-colors lang-text"><div class="line"><span class="syntax--text syntax--plain"><span class="syntax--meta syntax--paragraph syntax--text"><span>cd&nbsp;~/Downloads</span></span></span></div><div class="line"><span class="syntax--text syntax--plain"><span class="syntax--meta syntax--paragraph syntax--text"><span>wget&nbsp;</span><span class="syntax--markup syntax--underline syntax--link syntax--https syntax--hyperlink"><span>https://github.com/belltown/violetbug/releases/download/vx.y.z/violetbug-linux.zip</span></span></span></span></div></pre><p>Unzip to the appropriate folder, e.g. <code>/opt</code></p>
+<pre class="editor-colors lang-text"><div class="line"><span class="syntax--text syntax--plain"><span class="syntax--meta syntax--paragraph syntax--text"><span>cd&nbsp;~/Downloads</span></span></span></div><div class="line"><span class="syntax--text syntax--plain"><span class="syntax--meta syntax--paragraph syntax--text"><span>wget&nbsp;</span><span class="syntax--markup syntax--underline syntax--link syntax--https syntax--hyperlink"><span>https://github.com/belltown/violetbug/releases/download/vx.y.z/violetbug-linux.zip</span></span></span></span></div></pre><p>Unzip to the appropriate directory, e.g. <code>/opt</code></p>
 <pre class="editor-colors lang-text"><div class="line"><span class="syntax--text syntax--plain"><span class="syntax--meta syntax--paragraph syntax--text"><span>sudo&nbsp;unzip&nbsp;-o&nbsp;-q&nbsp;violetbug-linux.zip&nbsp;-d&nbsp;/opt</span></span></span></div></pre><p>Run the application:</p>
 <pre class="editor-colors lang-text"><div class="line"><span class="syntax--text syntax--plain"><span>&nbsp;</span><span class="syntax--meta syntax--paragraph syntax--text"><span>/opt/violetbug-linux-x64/violetbug</span></span></span></div></pre><p>Attach to the Launcher for convenience. If you don&#39;t see the application icon, try copying the file <code>/opt/violetbug-linux-x64/resources/app/violetbug.desktop</code> to <code>~/.local/share/applications/violetbug.desktop</code>, editing it if necessary for the correct path name/icon file, etc.</p>
 <h6 id="to-download-installers-for-specific-linux-distributions">To download installers for specific linux distributions</h6>
