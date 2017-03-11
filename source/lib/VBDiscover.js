@@ -1,6 +1,7 @@
 'use strict';
 
 // Node.js modules
+const os = require('os')          // To get network interfaces
 const http = require('http')      // ECP requests
 const dgram = require('dgram')    // SSDP M-SEARCH and NOTIFY
 
@@ -32,6 +33,7 @@ function parseDeviceDetails(ipAddr, sn, data) {
 // Send an ECP request to the device to get its details
 // Invoke the callback to pass the device details back to the caller
 function deviceDiscovered(ipAddr, serialNumber, discoveryCallback) {
+  let remoteAddress = ''
   const bufferList = []
   const req = http.request({host: ipAddr, port: 8060, family: 4}, (res) => {
     res.on('data', (chunk) => {
@@ -39,7 +41,11 @@ function deviceDiscovered(ipAddr, serialNumber, discoveryCallback) {
     })
     res.on('end', () => {
       const response = Buffer.concat(bufferList).toString()
-      const details = parseDeviceDetails(ipAddr, serialNumber, response)
+      // Use the remoteAddress obtained from the socket event in case
+      // an ECP request has been issued specifying a host name
+      // rather than an IP address
+      const ip = remoteAddress || ipAddr
+      const details = parseDeviceDetails(ip, serialNumber, response)
       if (details.serialNumber) {
         discoveryCallback(details)
       }
@@ -51,6 +57,9 @@ function deviceDiscovered(ipAddr, serialNumber, discoveryCallback) {
   // This is instead of setting the timeout when http.request() is called,
   // which would only be emitted after the socket is assigned and is connected,
   // and would not detect a timeout while trying to establish the connection
+  // Additionally, we'll need to listen for the socket connect event so we
+  // can obtain the remote IP address in case an ECP request was issued to
+  // a host name rather than an IP address
   req.on('socket', (socket) => {
     socket.setTimeout(10000)
     socket.on('timeout', () => {
@@ -59,16 +68,27 @@ function deviceDiscovered(ipAddr, serialNumber, discoveryCallback) {
       // This will cause a createHangUpError error to be emitted on the request
       req.abort()
     })
+    // Listen for the socket connect event so we can determine the
+    // IP address of the Roku, which will be necessary if an ECP request
+    // was issue to a host name rather than an IP address; this will
+    // be the earliest time we can determine what the IP address is
+    socket.on('connect', () => {
+      remoteAddress = socket.remoteAddress
+    })
   })
 
   // Even if there is an error on the ECP request, invoke the
   // discoveryCallback with the known ip address and serial number
   req.on('error', (error) => {
-    const details = parseDeviceDetails(ipAddr, serialNumber, '')
+    // Use the remoteAddress obtained from the socket connect event in case
+    // an ECP request has been issued specifying a host name
+    // rather than an IP address
+    const ip = remoteAddress || ipAddr
+    const details = parseDeviceDetails(ip, serialNumber, '')
     if (details.serialNumber) {
       discoveryCallback(details)
     }
-    console.log('deviceDiscovered error: %O', error)
+    //console.log('deviceDiscovered error: %O', error)
   })
 
   // The ECP request has an empty body
@@ -166,12 +186,90 @@ function ssdpSearch(discoveryCallback) {
   setTimeout(ssdpSearchRequest, 30000, discoveryCallback)
 }
 
+// Convert an IP address from a dotted decimal string to a 32-bit integer
+function ipAddrTo32 (ipAddr) {
+  let ip32 = 0
+  const ma = ipAddr.match(/^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/)
+  if (Array.isArray(ma) && ma.length === 5) {
+    const d0 = parseInt(ma[1], 10)
+    const d1 = parseInt(ma[2], 10)
+    const d2 = parseInt(ma[3], 10)
+    const d3 = parseInt(ma[4], 10)
+    ip32 = ((d0 * 256 + d1) * 256 + d2) * 256 + d3
+  }
+  return ip32
+}
+
+// Convert a 32-bit IP address to a dotted decimal string
+function ip32ToAddr(ip32) {
+  const d3 = ip32 % 256
+  let r = (ip32 - d3) / 256
+  const d2 = r % 256
+  r = (r - d2) / 256
+  const d1 = r % 256
+  const d0 = (r - d1) / 256
+  return d0 + '.' + d1 + '.' + d2 + '.' + d3
+}
+
+// Send an ECP request to each potential host on the network
+function subnetScan(discoveryCallback, hostLimit = 256) {
+
+  // Get the list of all network interfaces
+  const interfaceList = os.networkInterfaces()
+
+  // Examine each network interface
+  for (let interfaceListEntry of Object.values(interfaceList)) {
+
+    // Get the list of IP addresses handled by this interface
+    for (let interfaceItem of Object.values(interfaceListEntry)) {
+
+      // Only handle non-internal (not loopback), IPv4 addresses
+      if (!interfaceItem.internal && interfaceItem.family === 'IPv4') {
+
+        // Convert the interface ip address and subnet mask
+        // from dotted decimal to 32-bit integers
+        const ip32 = ipAddrTo32(interfaceItem.address)
+        const mask32 = ipAddrTo32(interfaceItem.netmask)
+
+        // Only continue if the ip address and subnet mask are valid
+        if (ip32 > 0 && mask32 > 0) {
+
+          // Use the subnet mask to determine the maximum number of
+          // hosts to scan for on this subnet
+          const maxHosts = (2 ** 32) - mask32
+
+          // Limit the maximum number of hosts addressed
+          const lastHost = maxHosts > hostLimit ? hostLimit : maxHosts
+
+          // Compute the base address for all hosts on this subnet
+          const base32 = ip32 - (ip32 % maxHosts)
+
+          // Scan each host on this subnet (don't scan first and last)
+          for (let i = 1; i < lastHost - 1; i++) {
+
+            // Generate next host ip address
+            const host32 = base32 + i
+
+            // Don't send an ECP request to ourself
+            if (host32 !== ip32) {
+              const ipAddr = ip32ToAddr(host32)
+              // Send an ECP request to the host ip address
+              deviceDiscovered(ipAddr, '', discoveryCallback)
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 class VBDiscover {
 
   // Initiate SSDP discovery
-  static discover(discoveryCallback) {
+  static discover(discoveryCallback, maxHostsToScan = 256) {
     ssdpSearch(discoveryCallback)
     ssdpNotify(discoveryCallback)
+    subnetScan(discoveryCallback, maxHostsToScan)
   }
 
   // Attempt to acquire device details from a user-entered, non-discovered

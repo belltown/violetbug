@@ -22,6 +22,9 @@ class VBListPanel {
     // Connection callback
     this.connectCallback = connectCallback
 
+    // Port list used to populate the drop-down list
+    this.portList = {}
+
     // snTable is a Map() using Serial Number as the key
     // The value of the Map() is an SnEntry
     // snTable is ONLY updated when an ECP response is received
@@ -55,6 +58,9 @@ class VBListPanel {
       return
     }
 
+    // Restore the port list (from the config object)
+    this.portList = this.restorePortList()
+
     // Restore the saved list of devices (from the config object)
     this.snTable = this.restoreDeviceList()
 
@@ -64,6 +70,11 @@ class VBListPanel {
 
     // Update the UI based on the restored device list
     this.updateUIDevices()
+
+    // Listen for updates from the Main Process when port list changes
+    ipcRenderer.on('portListChanged',
+      (e, portListJson) => this.onPortListChanged(e, portListJson)
+    )
 
     // Add Connect button event listener
     this.connectButton.addEventListener('click',
@@ -109,12 +120,18 @@ class VBListPanel {
 
     // Initiate SSDP discovery
     // Make sure not to start discovery until List panel set up
-    VBDiscover.discover(this.onDiscoveredDevice.bind(this))
+    VBDiscover.discover(this.onDiscoveredDevice.bind(this),
+                        this.config.maxHostsToScan)
   }
 
   // Convert the snTable Map() object into a JSON string
   snTableToJSONString() {
     return JSON.stringify([...this.snTable])
+  }
+
+  // Read the saved port list to populate the ports dropdown menu
+  restorePortList() {
+    return this.config.portList
   }
 
   // Read the saved list of discovered devices to populate the SN table
@@ -138,10 +155,49 @@ class VBListPanel {
     return null
   }
 
+  // Upon receiving notification from the Main Process that the port list
+  // has changed, update our own copy of the port list, and the dropdown list
+  onPortListChanged(e, portListJson) {
+    this.portList = JSON.parse(portListJson)
+    this.updateUIDevices()
+  }
+
   // The device table is sorted then used to update the UI
   // This function should only be called when there is
   // a change to the device table
   updateUIDevices() {
+
+    // Remove existing entries from the ports dropdown list
+    while (this.connectToPort.firstChild) {
+      this.connectToPort.removeChild(this.connectToPort.firstChild)
+    }
+
+    // Sort the port list
+    const sortedPorts = Object.keys(this.portList).sort()
+
+    // Populate the ports drop-down list
+    for (let entry of sortedPorts) {
+      const option = document.createElement('OPTION')
+      const entryText = this.portList[entry]
+      const displayText = entryText ? entry + ' — ' + entryText : entry
+      option.value = entry
+      option.appendChild(document.createTextNode(displayText))
+      this.connectToPort.appendChild(option)
+    }
+    const option = document.createElement('OPTION')
+    option.appendChild(document.createTextNode('[Use Settings to set ports]'))
+    option.value = ''
+    option.disabled = true
+    this.connectToPort.appendChild(option)
+
+
+    // Make sure the currently-selected port does not change
+    if (sortedPorts.includes(this.config.lastConnectedPort)) {
+      this.connectToPort.value = this.config.lastConnectedPort
+    }
+    else {
+      this.connectToPort.value = ""
+    }
 
     // Sort the device table by ip address
     const sorted = [...this.snTable.values()].sort((a, b) => a.ip32 - b.ip32)
@@ -170,13 +226,24 @@ class VBListPanel {
       tdIp.appendChild(document.createTextNode(entry.ipAddr))
       tdIp.classList.add('ipAddr')
 
-      // Friendly name
+      // Use the Friendly Name if non-blank, otherwise use Serial Number
+      let description = ''
+      if (entry.friendlyName) {
+        description = entry.friendlyName
+      }
+      else {
+        description = entry.serialNumber
+        if (entry.modelNumber) {
+          description += ' / ' + entry.modelNumber
+        }
+      }
       const tdFn = document.createElement('TD')
-      tdFn.appendChild(document.createTextNode(entry.friendlyName))
+      tdFn.appendChild(document.createTextNode(description))
 
       // Delete button (use a circle with an "x" in the middle)
       const tdDel = document.createElement('TD')
       tdDel.appendChild(document.createTextNode('\u24e7'))
+      tdDel.title = 'Delete this device'
       tdDel.classList.add('del')
       tdDel.addEventListener('click', e => {
         // Don't want this registering as a click to select the device
@@ -348,24 +415,26 @@ class VBListPanel {
     // Invalid ip address will be returned with ip32 property of zero
     const ip = validIpAddr(this.connectToIp.value)
 
-    // Invalid port will be returned as zero
-    const port = validPort(this.connectToPort.value)
+    if (ip) {
+      // Invalid port will be returned as zero
+      const port = validPort(this.connectToPort.value)
 
-    // If the ip address and port are valid, attempt to establish a connection
-    if (ip && port) {
-      // Fill in the selected device details
-      if (!this.displaySelectedDevice(ip)) {
-        // If the IP does not exist in the discovered device table,
-        // send off an ECP request to get its details
-        VBDiscover.ecp(ip, this.onDiscoveredDevice.bind(this))
+      // If the ip address and port are valid, attempt to establish a connection
+      if (port) {
+        // Fill in the selected device details
+        if (!this.displaySelectedDevice(ip)) {
+          // If the IP does not exist in the discovered device table,
+          // send off an ECP request to get its details
+          VBDiscover.ecp(ip, this.onDiscoveredDevice.bind(this))
+        }
+
+        // The connect callback executes in the DockPanel's context
+        this.connectCallback(ip, port)
+
+        // Send IPC to main process so its config object can be updated
+        // to record the last connected device and port
+        ipcRenderer.send('update-last-connected-device', ip, port.toString())
       }
-
-      // The connect callback executes in the DockPanel's context
-      this.connectCallback(ip, port)
-
-      // Send IPC to main process so its config object can be updated
-      // to record the last connected device and port
-      ipcRenderer.send('update-last-connected-device', ip, port.toString())
     }
   }
 
@@ -460,10 +529,14 @@ class VBListPanel {
 // Return an empty string if the ip address string is invalid
 function validIpAddr(ipAddr) {
   let ipAddrReturn = ipAddr.trim()
-  if (!/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/.test(ipAddrReturn)) {
-    ipcRenderer.send('error-dialog', 'Invalid IP address')
-    ipAddrReturn = ''
-  }
+
+  // Forgo the error-checking to allow a host name to be entered instead ...
+
+  // if (!/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/.test(ipAddrReturn)) {
+  //   ipcRenderer.send('error-dialog', 'Invalid IP address')
+  //   ipAddrReturn = ''
+  // }
+
   return ipAddrReturn
 }
 
@@ -474,21 +547,23 @@ function validIpAddr(ipAddr) {
 function validPort(port) {
   let portReturn = parseInt(port, 10)
   if (!(!isNaN(portReturn) && portReturn > 0 && portReturn < 65536)) {
-    ipcRenderer.send('error-dialog', 'Invalid Port')
+    ipcRenderer.send('error-dialog',
+                     'Invalid Port\n\nGo to Settings > Ports ... to Set Ports')
     portReturn = 0
   }
   return portReturn
 }
 
-// Convert an ip address of the form nnn.nnn.nnn.nnn to a
-// 32-bit (unsigned) integer -- used for sorting device list
-function ipAddrTo32(ipAddr) {
+// Convert an IP address from a dotted decimal string to a 32-bit integer
+function ipAddrTo32 (ipAddr) {
   let ip32 = 0
-  const ma = /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/.exec(ipAddr)
-  if (Array.isArray(ma) && ma.length == 5) {
-    // Note - don't use JavaScript's bit shift operators
-    // (they coerce operands to SIGNED 32-bit integers; we need unsigned)
-    ip32 = ((ma[1] * 256 + ma[2]) * 256 + ma[3]) * 256 + ma[4]
+  const ma = ipAddr.match(/^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/)
+  if (Array.isArray(ma) && ma.length === 5) {
+    const d0 = parseInt(ma[1], 10)
+    const d1 = parseInt(ma[2], 10)
+    const d2 = parseInt(ma[3], 10)
+    const d3 = parseInt(ma[4], 10)
+    ip32 = ((d0 * 256 + d1) * 256 + d2) * 256 + d3
   }
   return ip32
 }

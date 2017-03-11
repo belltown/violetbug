@@ -1,7 +1,7 @@
 {
   "name": "violetbug",
   "productName": "VioletBug",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "private": true,
   "description": "VioletBug -- A Roku Debugger Graphical Interface",
   "main": "main.js",
@@ -14,7 +14,6 @@
     "zip-win": "mkdir -p ../dist && cd ../builds/win && zip -r -q ../../dist/violetbug-win * && cd ../../source",
     "zip-linux": "mkdir -p ../dist && cd ../builds/linux && zip -r -q --symlinks ../../dist/violetbug-linux * && cd ../../source",
     "zip-mac": "mkdir -p ../dist && cd ../builds/mac/violetbug-darwin-x64 && zip -r -q --symlinks ../../../dist/violetbug-mac violetbug.app && cd ../../../source",
-    "zip-on-linux": "npm run zip-win && npm run zip-linux && npm run zip-mac",
     "dist-appimage": "build --linux AppImage",
     "dist-deb": "build --linux deb",
     "dist-rpm": "build --linux rpm",
@@ -48,7 +47,6 @@
     "Roku",
     "debugger",
     "debug",
-    "debugger",
     "Telnet"
   ],
   "copyright": "Copyright © 2017 Belltown",
@@ -66,10 +64,11 @@
   "bugs": {
     "url": "https://github.com/belltown/violetbug/issues"
   },
+  "//": "Need ajv to satisfy broken peer dependency for electron-builder ...",
   "devDependencies": {
-    "ajv": "5.0.3-beta.0",
-    "electron": "1.6.1",
-    "electron-builder": "14.5.2",
-    "electron-packager": "8.5.2"
+    "ajv": ">=5.0.3-beta.0",
+    "electron": "1.6.2",
+    "electron-packager": "8.5.2",
+    "electron-builder": "15.4.2"
   }
 }

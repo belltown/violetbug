@@ -2,7 +2,7 @@
 { // <= Enclosing block to keep function names out of global namespace
 
   //
-  // Main menu font selection settings dialog
+  // Main menu shortcuts settings dialog
   // Invoked from VBMenu.js
   //
 

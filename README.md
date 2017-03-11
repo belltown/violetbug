@@ -6,13 +6,12 @@
 
 VioletBug is a cross-platform desktop application providing a graphical interface to the Roku Debugger as an alternative to Telnet. It is similar to PurpleBug, https://belltown-roku.tk/PurpleBug, which is still supported; however, PurpleBug only runs on Windows PCs, and is closed-source. VioletBug, in contrast, is open-source running under [Electron](http://electron.atom.io/) and [Node.js](https://nodejs.org), written entirely in HTML, CSS and JavaScript. The source code can be found on [GitHub](https://github.com/belltown/violetbug).
 
-Note that VioletBug is not intended as a general-purpose Telnet client. Its features are geared towards debugging on a Roku. Currently, Rokus can only be addressed by IP address, not by host name; and only well-known ports used by the Roku are supported.
-
 ## Features
 
 * Runs under Windows (7+), macOS (10.9+), and linux
 * Automatic discovery of Rokus on the local network
-* A drop-down menu of well-known Roku ports
+* Manual input of IP address or host name for undiscovered devices
+* A drop-down menu of well-known Roku ports (other ports can be added in the Settings menu)
 * Separate tabs for each Roku/port connection
 * Floating tabs (right-click the tab header)
 * Session logging for each tab

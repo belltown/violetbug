@@ -1,0 +1,116 @@
+@import './fontList.css';
+
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
+button, input {
+  font: inherit;              /* Inherit all font properties from root font */
+}
+
+body {
+  margin: 0;                  /* No space around the edge of the body canvas */
+  background-color: #F3F3F3;  /* Configure page color if needed */
+}
+
+input {
+  border: 1px solid #609f60;
+  border-radius: 0.25em;
+  height: 1.5em;
+}
+
+input:focus {
+  outline: none;
+  border: 1px solid orange;
+  border-radius: 0.25em;
+}
+
+/* Used to center #contentPanel */
+#contentContainer {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+#contentPanel {
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#topPanel {
+  width: 100%;
+  height: 1em;
+  margin-top: 1em;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+#addButton {
+  align-self: start;
+  width: calc(7ch + 4px);
+}
+
+#portList {
+  width: 100%;
+  margin: 0.5em 0 0 0;
+  padding: 0;
+}
+
+#portList li {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-column-gap: 1em;
+  align-items: center;
+  /*padding: 0 0 0.5em 0;*/
+  margin: 0 0 0.5em 0;
+}
+
+#portError {
+  color: red;
+}
+
+.portNumber {
+  background-color: #DDD;
+  padding: 0.25em 1ch;
+  width: 5ch;
+  text-align: right;
+}
+
+.portDescription {
+  background-color: #DDD;
+  padding: 0.25em;
+}
+
+.deleteIcon {
+  color: #609f60;
+}
+.deleteIcon::before {
+  content: "Ⓧ";
+  font-size: 1.5em;
+}
+
+.deleteIcon:hover {
+  color: red;
+}
+
+button {
+  padding: 0.2em 1.4ch;
+  height: 2em;
+}
+
+.invalidPort {
+  border: 1px solid red;
+}
+
+#buttonPanel {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-column-gap: 3em;
+  padding: 1em 0 2em 0;
+}

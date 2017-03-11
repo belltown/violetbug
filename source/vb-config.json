@@ -8,14 +8,13 @@
   "windowState": "Normal",
   "zoomLevel": 0,
   "seenHelp": false,
-  "maxOutputLines": 10000,
   "logfilePath": "",
   "lastConnectedIp": "",
   "lastConnectedPort": "8085",
   "autoScroll": true,
   "autoWrap": true,
   "insertTabsAtEnd": true,
-  "maxOutputNodes": 10000,
+  "maxOutputNodes": 15000,
   "foregroundColor": "#00DD00",
   "backgroundColor": "#000000",
   "shortcutList" :
@@ -37,5 +36,11 @@
   "fontSize": "11pt",
   "snTable": "[]",
   "floaties": "[]",
-  "floatiesInTaskbar": true
+  "floatiesInTaskbar": true,
+  "portList": {
+    "8085": "Main Debug",
+    "8080": "Genkey",
+    "8087": "Screensaver"
+  },
+  "maxHostsToScan": 256
 }

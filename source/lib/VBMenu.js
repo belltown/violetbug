@@ -177,6 +177,42 @@ class VBMenu {
       }
     }
 
+    function portsSubmenu() {
+      return {
+        label: 'Ports ...',
+        click(menuItem, browserWindow, event) {
+          // Flush the current config to disk, so ports window can read it
+          g('saveConfigObject')()
+
+          // Display the ports dialog window
+          let portsWindow = new BrowserWindow({
+            width: 540,
+            height: 480,
+            title: 'Ports',
+            icon: VBIcons.icon,
+            show: false,
+            parent: browserWindow,
+            modal: true,
+            backgroundColor: '#F3F3F3',
+            webPreferences: {
+              defaultEncoding: 'UTF-8',
+              experimentalFeatures: true
+            }
+          })
+          portsWindow.setMenu(null)
+          //portsWindow.webContents.openDevTools()
+          portsWindow.loadURL('file://' +
+                              path.join(__dirname, '..', 'ports.html'))
+          portsWindow.once('ready-to-show', () => {
+            portsWindow.show()
+          })
+          portsWindow.on('closed', () => {
+            portsWindow = null
+          })
+        }
+      }
+    }
+
     function fontsSubmenu() {
       return {
         label: 'Fonts ...',
@@ -251,10 +287,10 @@ class VBMenu {
       return {
         label: 'Shortcuts ...',
         click(menuItem, browserWindow, event) {
-          // Flush the current config to disk, so font window can read it
+          // Flush the current config to disk, so shortcuts window can read it
           g('saveConfigObject')()
 
-          // Display the fonts dialog window
+          // Display the shortcuts dialog window
           let shortcutsWindow = new BrowserWindow({
             //width: 640,
             //height: 575,
@@ -288,6 +324,7 @@ class VBMenu {
         submenu: [
           autoScrollSubmenu(),
           autoWrapSubmenu(),
+          portsSubmenu(),
           fontsSubmenu(),
           colorsSubmenu(),
           shortcutsSubmenu(),

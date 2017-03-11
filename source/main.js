@@ -48,6 +48,24 @@
       return null
     }
 
+    // If we're using the original version of the config file,
+    // then reset the device table as the ip address entry format has changed,
+    // ensure that maxHostsToScan is defined, and there is a valid port list
+    if (config.version === '0.0.0' ||
+        config.version === '0.0.1' ||
+        config.version === '0.0.2' ||
+        config.version === '0.0.3') {
+      config.version = '0.0.4'
+      config.snTable = '[]'
+      config.portList = {
+        '8085': 'Main Debug',
+        '8080': 'Genkey',
+        '8087': 'Screensaver'
+      }
+      config.maxHostsToScan = 256
+      global.vbConfig.save()
+    }
+
     // Turn the snTables and floaties arrays into Maps
     configArraysToMaps(config)
 
@@ -428,9 +446,17 @@
     window.close()
   })
 
-  // ---------------------------------------------------
-  // UI configuration changes: colors, fonts, shortcuts
-  // ---------------------------------------------------
+  // ----------------------------------------------------------
+  // UI configuration changes: ports, colors, fonts, shortcuts
+  // ----------------------------------------------------------
+
+  // If the port list has changed, store new port list in config,
+  // and broadcast to ListPanel renderer process
+  ipcMain.on('portListChanged', (e, portListJson) => {
+    config.portList = JSON.parse(portListJson)
+    global.saveConfigObject()
+    global.mainWindow.webContents.send('portListChanged', portListJson)
+  })
 
   // If the foreground color has changed, store new color in config,
   // and broadcast to renderer processes
@@ -457,7 +483,6 @@
     // Persist the global config object to disk
     global.saveConfigObject()
   })
-
 
   // If the font family has changed, store the new font family in config,
   // and broadcast to renderer processes
