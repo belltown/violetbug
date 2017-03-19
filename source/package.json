@@ -1,7 +1,7 @@
 {
   "name": "violetbug",
   "productName": "VioletBug",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "private": true,
   "description": "VioletBug -- A Roku Debugger Graphical Interface",
   "main": "main.js",
@@ -64,11 +64,9 @@
   "bugs": {
     "url": "https://github.com/belltown/violetbug/issues"
   },
-  "//": "Need ajv to satisfy broken peer dependency for electron-builder ...",
   "devDependencies": {
-    "ajv": ">=5.0.3-beta.0",
     "electron": "1.6.2",
-    "electron-packager": "8.5.2",
-    "electron-builder": "15.4.2"
+    "electron-builder": "15.6.3",
+    "electron-packager": "8.5.2"
   }
 }
