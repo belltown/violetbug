@@ -196,6 +196,7 @@ class VBMenu {
             backgroundColor: '#F3F3F3',
             webPreferences: {
               defaultEncoding: 'UTF-8',
+              nodeIntegration: true,
               experimentalFeatures: true
             }
           })
@@ -232,6 +233,7 @@ class VBMenu {
             backgroundColor: '#FFF',
             webPreferences: {
               defaultEncoding: 'UTF-8',
+              nodeIntegration: true,
               experimentalFeatures: true
             }
           })
@@ -267,6 +269,7 @@ class VBMenu {
             backgroundColor: '#FFF',
             webPreferences: {
               defaultEncoding: 'UTF-8',
+              nodeIntegration: true,
               experimentalFeatures: true
             }
           })
@@ -302,6 +305,7 @@ class VBMenu {
             backgroundColor: '#FFF',
             webPreferences: {
               defaultEncoding: 'UTF-8',
+              nodeIntegration: true,
               experimentalFeatures: true
             }
           })
@@ -417,6 +421,7 @@ class VBMenu {
                 show: true,
                 webPreferences: {
                   defaultEncoding: 'UTF-8',
+                  nodeIntegration: true,
                 }
               })
               aboutWindow.setMenu(null)
