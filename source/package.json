@@ -1,7 +1,7 @@
 {
   "name": "violetbug",
   "productName": "VioletBug",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "private": true,
   "description": "VioletBug -- A Roku Debugger Graphical Interface",
   "main": "main.js",
@@ -65,8 +65,8 @@
     "url": "https://github.com/belltown/violetbug/issues"
   },
   "devDependencies": {
-    "electron": "1.6.2",
-    "electron-builder": "15.6.3",
-    "electron-packager": "8.5.2"
+    "electron": "^9.4.4",
+    "electron-builder": "^23.6.0",
+    "electron-packager": "17.1.1"
   }
 }

@@ -157,6 +157,8 @@
         // to device output panel
         backgroundThrottling: false,
 
+        nodeIntegration: true,
+
         // Needed for CSS 'grid' support
         experimentalFeatures: true
       }
@@ -304,6 +306,7 @@
         // window is minimized, as it is used to trigger updates
         // to device output panel
         backgroundThrottling: false,
+        nodeIntegration: true,
 
         // Needed for CSS 'grid' support
         experimentalFeatures: true
